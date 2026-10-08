@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Generala</string>
+    <string name="share_title">Invitar a jugar</string>
+    <string name="reminder_channel_name">Recordatorio diario</string>
+    <string name="reminder_channel_description">Un aviso por día para jugar una partida, solo si ese día no jugaste.</string>
+    <string name="reminder_permission_denied">Sin permiso de notificaciones no podemos recordarte. Podés activarlo en Ajustes.</string>
+    <string-array name="reminder_texts">
+        <item>¿Una generala rápida? Tu rival te está esperando.</item>
+        <item>Hoy puede salir servida. ¿Tirás los dados?</item>
+        <item>Cinco dados, tres tiradas. ¿Una partida?</item>
+        <item>¿Te animás a la revancha?</item>
+    </string-array>
+</resources>

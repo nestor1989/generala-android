@@ -1,0 +1,1399 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>Generala</title>
+<meta name="color-scheme" content="light only">
+</head>
+<body>
+
+
+<style>
+  :root{
+    --felt:#0f3d2e;
+    --felt-2:#0c2f24;
+    --cream:#f6efdc;
+    --cream-2:#efe4c8;
+    --ink:#241f14;
+    --ink-soft:#5c5340;
+    --line:#d7c79f;
+    --amber:#d98e2b;
+    --amber-deep:#a8641a;
+    --good:#2f7d4f;
+    --good-soft:#e4f1e7;
+    --bad:#a94438;
+    --die:#fdfbf3;
+    --die-pip:#241f14;
+    --held-ring:#d98e2b;
+    --shadow: 0 10px 24px -12px rgba(15,61,46,.45);
+    color-scheme: light;
+  }
+  *{box-sizing:border-box;}
+  body{
+    margin:0;
+    background:
+      radial-gradient(120% 90% at 50% -10%, var(--felt-2), var(--felt) 60%);
+    color:var(--ink);
+    font-family:'Karla', system-ui, sans-serif;
+    padding-inline:16px;
+    min-height:100%;
+  }
+  h1,h2,h3, .score-num, .roll-count, .cat-score{
+    font-family:'Fraunces', Georgia, serif;
+  }
+  .wrap{max-width:520px;margin:0 auto;display:flex;flex-direction:column;gap:16px;padding-block:20px 40px;}
+
+  /* ---------- Header ---------- */
+  .topbar{display:flex;align-items:baseline;justify-content:space-between;gap:10px;color:var(--cream);}
+  .topbar .brand{display:flex;align-items:baseline;gap:8px;}
+  .topbar h1{margin:0;font-size:26px;font-weight:600;letter-spacing:.01em;}
+  .topbar .tagline{font-size:12px;color:#cdbf94;font-family:'Karla',sans-serif;letter-spacing:.04em;text-transform:uppercase;}
+  .icon-btn{
+    background:transparent;border:1px solid rgba(246,239,220,.3);color:var(--cream);
+    border-radius:8px;padding:6px 10px;font-family:'Karla',sans-serif;font-size:12px;cursor:pointer;
+  }
+  .icon-btn:hover{background:rgba(246,239,220,.1);}
+
+  /* ---------- Setup screen ---------- */
+  .panel{
+    background:var(--cream);
+    border-radius:16px;
+    box-shadow:var(--shadow);
+    padding:22px 20px;
+    display:flex;flex-direction:column;gap:16px;
+  }
+  .panel p{margin:0;color:var(--ink-soft);font-size:14.5px;line-height:1.55;}
+  .mode-grid{display:grid;grid-template-columns:1fr;gap:10px;}
+  @media (min-width:420px){ .mode-grid{grid-template-columns:1fr 1fr;} }
+  .mode-card{
+    border:2px solid var(--line);
+    background:var(--cream-2);
+    border-radius:12px;
+    padding:16px 14px;
+    text-align:left;
+    cursor:pointer;
+    display:flex;flex-direction:column;gap:4px;
+    font-family:'Karla',sans-serif;
+    color:var(--ink);
+  }
+  .mode-card:hover, .mode-card:focus-visible{border-color:var(--amber);}
+  .mode-card.selected{border-color:var(--amber);background:var(--good-soft);}
+  .mode-card .mc-title{font-weight:700;font-size:15px;}
+  .mode-card .mc-sub{font-size:12.5px;color:var(--ink-soft);}
+  .stepper{display:flex;align-items:center;gap:14px;}
+  .stepper button{
+    width:34px;height:34px;border-radius:50%;border:1px solid var(--line);background:var(--cream-2);
+    color:var(--ink);font-size:18px;cursor:pointer;line-height:1;
+  }
+  .stepper button:disabled{opacity:.35;cursor:default;}
+  .stepper .count{font-family:'Fraunces',serif;font-size:20px;font-variant-numeric:tabular-nums;min-width:1.4em;text-align:center;}
+  .name-list{display:flex;flex-direction:column;gap:8px;}
+  .field{display:flex;flex-direction:column;gap:5px;}
+  .field-label{font-size:12px;font-weight:700;letter-spacing:.04em;text-transform:uppercase;color:var(--ink-soft);}
+  .field-row{display:flex;gap:8px;align-items:center;}
+  .field-row input{flex:1;min-width:0;}
+  .name-slot{display:flex;gap:8px;align-items:center;}
+  .name-slot .num{
+    flex:none;width:28px;height:28px;border-radius:50%;background:var(--amber);color:#2a1a05;
+    display:flex;align-items:center;justify-content:center;font-weight:700;font-size:13px;
+  }
+  .name-slot input{flex:1;min-width:0;}
+  .reroll{
+    flex:none;width:40px;height:40px;border-radius:10px;border:1px solid var(--line);background:var(--cream-2);
+    font-size:18px;cursor:pointer;
+  }
+  #cpu-config input, .name-list input{
+    border:1px solid var(--line);background:var(--die);color:var(--ink);
+    border-radius:8px;padding:10px 12px;font-family:'Karla',sans-serif;font-size:15px;
+  }
+  .name-list input{
+    border:1px solid var(--line);background:var(--die);color:var(--ink);
+    border-radius:8px;padding:9px 12px;font-family:'Karla',sans-serif;font-size:14px;
+  }
+  .cta{
+    background:var(--amber);color:#2a1a05;border:none;border-radius:12px;
+    padding:14px 18px;font-family:'Karla',sans-serif;font-weight:700;font-size:15.5px;
+    cursor:pointer;box-shadow:0 6px 0 var(--amber-deep);
+    transition:transform .05s ease;
+  }
+  .cta:active{transform:translateY(3px);box-shadow:0 3px 0 var(--amber-deep);}
+  .cta.secondary{background:var(--cream-2);color:var(--ink);box-shadow:0 6px 0 var(--line);}
+  .cta.secondary:active{box-shadow:0 3px 0 var(--line);}
+  .cta:disabled{opacity:.5;cursor:default;box-shadow:none;}
+
+  /* ---------- Game screen ---------- */
+  .turn-banner{
+    display:flex;align-items:center;justify-content:space-between;
+    color:var(--cream);
+  }
+  .turn-banner .who{font-size:19px;font-weight:600;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;}
+  .turn-banner{gap:10px;}
+  .roll-pill{flex:none;}
+  .turn-banner .who .dot{display:inline-block;width:9px;height:9px;border-radius:50%;background:var(--amber);margin-right:8px;}
+  .roll-pill{
+    background:rgba(246,239,220,.12);border:1px solid rgba(246,239,220,.25);
+    color:var(--cream);border-radius:999px;padding:5px 12px;font-size:12.5px;
+    display:flex;align-items:center;gap:6px;font-family:'Karla',sans-serif;
+  }
+  .roll-pill .roll-count{font-size:14px;font-variant-numeric:tabular-nums;}
+  .servida-flag{
+    display:inline-flex;align-items:center;gap:5px;background:var(--amber);color:#2a1a05;
+    border-radius:999px;padding:3px 10px;font-size:11.5px;font-weight:700;letter-spacing:.03em;
+    text-transform:uppercase;font-family:'Karla',sans-serif;
+  }
+
+  .tray{
+    background:linear-gradient(180deg, var(--felt-2), var(--felt));
+    border-radius:18px;
+    padding:22px 16px 18px;
+    box-shadow:inset 0 2px 10px rgba(0,0,0,.35), var(--shadow);
+    display:flex;flex-direction:column;align-items:center;gap:16px;
+  }
+  .dice-row{display:flex;gap:10px;justify-content:center;flex-wrap:nowrap;}
+  .die{
+    width:min(56px, calc((100vw - 104px) / 5));height:min(56px, calc((100vw - 104px) / 5));
+    border-radius:12px;background:var(--die);
+    display:grid;grid-template-columns:repeat(3,1fr);grid-template-rows:repeat(3,1fr);
+    padding:9px;box-shadow:0 3px 0 rgba(0,0,0,.25), inset 0 0 0 1px rgba(0,0,0,.05);
+    cursor:pointer;position:relative;
+    transition:transform .15s ease, box-shadow .15s ease;
+  }
+  .die[data-unrolled="true"]{
+    background:repeating-linear-gradient(135deg, rgba(255,255,255,.06) 0 6px, transparent 6px 12px), var(--felt-2);
+    box-shadow:inset 0 0 0 2px rgba(246,239,220,.18);
+    cursor:default;
+  }
+  .die.held{box-shadow:0 3px 0 rgba(0,0,0,.25), 0 0 0 3px var(--held-ring);transform:translateY(-4px);}
+  .die.rolling{animation:tumble .32s ease;}
+  @keyframes tumble{
+    0%{transform:rotate(0deg) scale(1);}
+    35%{transform:rotate(-14deg) scale(1.05);}
+    70%{transform:rotate(10deg) scale(1.02);}
+    100%{transform:rotate(0deg) scale(1);}
+  }
+  .pip{border-radius:50%;background:var(--die-pip);width:9px;height:9px;place-self:center;visibility:hidden;}
+  .pip.on{visibility:visible;}
+  .held-tag{
+    position:absolute;top:-9px;right:-6px;background:var(--held-ring);color:#2a1a05;
+    font-size:9.5px;font-weight:700;border-radius:999px;padding:2px 6px;font-family:'Karla',sans-serif;
+    box-shadow:0 2px 4px rgba(0,0,0,.3);
+  }
+  .tray-hint{color:#cdbf94;font-size:12px;text-align:center;font-family:'Karla',sans-serif;min-height:14px;}
+  .tray-actions{display:flex;gap:10px;width:100%;}
+  .tray-actions .cta{flex:1;}
+
+  /* ---------- Scoreboard ---------- */
+  .board-wrap{background:var(--cream);border-radius:16px;box-shadow:var(--shadow);overflow:hidden;}
+  .board-scroll{overflow-x:auto;}
+  table.board{border-collapse:collapse;width:100%;font-family:'Karla',sans-serif;}
+  table.board th, table.board td{
+    padding:10px 12px;text-align:center;border-bottom:1px solid var(--line);
+    white-space:nowrap;font-variant-numeric:tabular-nums;
+  }
+  table.board thead th{
+    font-size:12px;text-transform:uppercase;letter-spacing:.04em;color:var(--ink-soft);
+    padding-top:14px;position:sticky;top:0;background:var(--cream);
+  }
+  table.board thead th.active-col{color:var(--amber-deep);}
+  table.board td.cat-label, table.board th.cat-label{
+    text-align:left;position:sticky;left:0;background:var(--cream);
+    font-family:'Fraunces',serif;font-size:14px;font-weight:500;z-index:1;
+  }
+  table.board tbody tr:nth-child(7) td, table.board tbody tr:nth-child(7) th{border-top:2px solid var(--line);}
+  .cell-score{font-size:15px;}
+  .cell-filled{color:var(--ink);font-weight:700;}
+  .cell-empty-btn{
+    border:1px dashed var(--line);background:transparent;color:var(--ink-soft);
+    border-radius:8px;padding:6px 10px;font-size:14px;cursor:pointer;min-width:40px;
+    font-family:'Fraunces',serif;
+  }
+  .cell-empty-btn.can-score{border-color:var(--amber);color:var(--amber-deep);font-weight:700;background:var(--good-soft);}
+  .cell-empty-btn:disabled{cursor:default;opacity:.5;}
+  .cell-dash{color:var(--line);}
+  tfoot td{font-weight:700;font-family:'Fraunces',serif;font-size:15px;padding-top:12px;}
+  tfoot td.cat-label{color:var(--ink);}
+
+  /* ---------- Pass overlay ---------- */
+  .overlay{
+    position:fixed;inset:0;background:linear-gradient(180deg, var(--felt-2), var(--felt));
+    display:flex;flex-direction:column;align-items:center;justify-content:center;gap:18px;
+    padding:24px;text-align:center;z-index:20;
+  }
+  .overlay h2{color:var(--cream);font-size:26px;margin:0;}
+  .overlay p{color:#cdbf94;font-family:'Karla',sans-serif;font-size:14px;margin:0;max-width:280px;}
+
+  /* ---------- Results ---------- */
+  .result-card{
+    background:var(--cream);border-radius:16px;box-shadow:var(--shadow);
+    padding:26px 22px;display:flex;flex-direction:column;gap:14px;align-items:center;text-align:center;
+  }
+  .trophy{font-size:40px;}
+  .result-card h2{margin:0;font-size:24px;}
+  .final-list{display:flex;flex-direction:column;gap:8px;width:100%;}
+  .final-row{
+    display:flex;justify-content:space-between;align-items:center;
+    background:var(--cream-2);border-radius:10px;padding:10px 14px;font-family:'Karla',sans-serif;
+  }
+  .final-row.winner{background:var(--good-soft);border:1px solid var(--good);}
+  .final-row .name{font-weight:700;}
+  .final-row .pts{font-family:'Fraunces',serif;font-size:18px;font-variant-numeric:tabular-nums;}
+
+
+  /* ---------- Onboarding + rules ---------- */
+  .sheet-backdrop{
+    position:fixed;inset:0;z-index:30;background:rgba(8,27,20,.72);
+    display:flex;align-items:center;justify-content:center;padding:16px;
+  }
+  .sheet{
+    background:var(--cream);color:var(--ink);border-radius:18px;box-shadow:var(--shadow);
+    width:100%;max-width:440px;max-height:calc(100dvh - 32px);overflow-y:auto;
+    padding:22px 20px 20px;display:flex;flex-direction:column;gap:14px;
+  }
+  .sheet h2{margin:0;font-size:22px;line-height:1.2;}
+  .sheet h3{margin:6px 0 0;font-size:16px;}
+  .sheet p{margin:0;color:var(--ink-soft);font-size:14.5px;line-height:1.55;}
+  .sheet p b{color:var(--ink);}
+  .ob-step-label{font-size:11.5px;letter-spacing:.06em;text-transform:uppercase;color:var(--amber-deep);font-weight:700;}
+  .ob-visual{
+    background:linear-gradient(180deg, var(--felt-2), var(--felt));border-radius:14px;
+    padding:18px 10px;display:flex;flex-direction:column;align-items:center;gap:8px;
+  }
+  .ob-visual .cap{color:#cdbf94;font-size:12px;text-align:center;}
+  .mini-row{display:flex;gap:6px;justify-content:center;}
+  .mini-die{
+    width:34px;height:34px;border-radius:8px;background:var(--die);padding:5px;
+    display:grid;grid-template-columns:repeat(3,1fr);grid-template-rows:repeat(3,1fr);
+    box-shadow:0 2px 0 rgba(0,0,0,.25);position:relative;flex:none;
+  }
+  .mini-die .pip{width:6px;height:6px;}
+  .mini-die.held{box-shadow:0 2px 0 rgba(0,0,0,.25),0 0 0 2px var(--held-ring);transform:translateY(-3px);}
+  .mini-die.dim{opacity:.45;}
+  .ob-dots{display:flex;gap:6px;justify-content:center;}
+  .ob-dots span{width:7px;height:7px;border-radius:50%;background:var(--line);}
+  .ob-dots span.on{background:var(--amber);width:18px;border-radius:999px;}
+  .ob-nav{display:flex;gap:10px;}
+  .ob-nav .cta{flex:1;}
+  .link-btn{
+    background:none;border:none;color:var(--ink-soft);font-family:'Karla',sans-serif;font-size:13px;
+    text-decoration:underline;cursor:pointer;padding:4px;align-self:center;
+  }
+  .combo-list{display:flex;flex-direction:column;gap:8px;}
+  .combo{
+    display:grid;grid-template-columns:1fr auto;gap:4px 10px;align-items:center;
+    background:var(--cream-2);border-radius:12px;padding:10px 12px;
+  }
+  .combo .c-name{font-family:'Fraunces',serif;font-weight:600;font-size:15px;}
+  .combo .c-pts{font-family:'Fraunces',serif;font-weight:700;color:var(--amber-deep);font-variant-numeric:tabular-nums;text-align:right;font-size:14px;}
+  .combo .c-desc{grid-column:1 / -1;font-size:13px;color:var(--ink-soft);line-height:1.4;}
+  .combo .mini-row{grid-column:1 / -1;justify-content:flex-start;}
+  .combo .mini-die{width:26px;height:26px;padding:4px;border-radius:6px;}
+  .combo .mini-die .pip{width:4.5px;height:4.5px;}
+  .pts-table{width:100%;border-collapse:collapse;font-size:13.5px;}
+  .pts-table th,.pts-table td{padding:7px 8px;border-bottom:1px solid var(--line);text-align:right;font-variant-numeric:tabular-nums;}
+  .pts-table th:first-child,.pts-table td:first-child{text-align:left;}
+  .pts-table th{font-size:11.5px;text-transform:uppercase;letter-spacing:.04em;color:var(--ink-soft);}
+  .sheet ul{margin:0;padding-left:18px;color:var(--ink-soft);font-size:14px;line-height:1.55;}
+  .setup-links{display:flex;gap:6px;justify-content:center;flex-wrap:wrap;}
+  .cat-help{
+    background:none;border:none;padding:0;color:inherit;font:inherit;cursor:pointer;text-align:left;
+    border-bottom:1px dotted var(--ink-soft);
+  }
+  .toast{
+    position:fixed;left:50%;bottom:calc(16px + env(safe-area-inset-bottom,0px));transform:translateX(-50%);
+    width:calc(100% - 32px);max-width:440px;z-index:25;
+    background:var(--ink);color:var(--cream);border-radius:14px;padding:12px 14px;
+    font-size:13.5px;line-height:1.45;box-shadow:0 12px 30px -10px rgba(0,0,0,.5);
+  }
+  .toast b{font-family:'Fraunces',serif;}
+  .tray-hint-text{color:#e8dcb8;font-size:13px;text-align:center;line-height:1.4;min-height:36px;display:flex;align-items:center;justify-content:center;}
+
+  .reward-btn{
+    width:100%;background:transparent;color:var(--cream);border:1.5px dashed rgba(246,239,220,.45);
+    border-radius:12px;padding:11px 14px;font-family:'Karla',sans-serif;font-weight:700;font-size:14px;cursor:pointer;
+  }
+  .reward-btn:active{background:rgba(246,239,220,.08);}
+  .undo-bar{
+    position:fixed;left:50%;bottom:calc(16px + env(safe-area-inset-bottom,0px));transform:translateX(-50%);
+    width:calc(100% - 32px);max-width:440px;z-index:26;background:var(--ink);color:var(--cream);
+    border-radius:14px;padding:10px 10px 10px 14px;display:flex;align-items:center;gap:10px;
+    box-shadow:0 12px 30px -10px rgba(0,0,0,.5);font-size:13.5px;line-height:1.35;
+  }
+  .undo-bar span{flex:1;}
+  .undo-bar button{
+    flex:none;background:var(--amber);color:#2a1a05;border:none;border-radius:10px;padding:9px 12px;
+    font-family:'Karla',sans-serif;font-weight:700;font-size:13px;cursor:pointer;
+  }
+  .undo-bar .timer{height:3px;background:var(--amber);position:absolute;left:14px;right:14px;bottom:4px;border-radius:2px;transform-origin:left;}
+  @keyframes shrink{from{transform:scaleX(1);}to{transform:scaleX(0);}}
+  .setup-extras{display:flex;flex-direction:column;gap:10px;border-top:1px solid var(--line);padding-top:14px;}
+  .toggle-row{display:flex;align-items:center;justify-content:space-between;gap:12px;font-size:14px;color:var(--ink);cursor:pointer;}
+  .toggle-row input{width:20px;height:20px;accent-color:var(--amber-deep);flex:none;}
+  .result-actions{display:flex;flex-direction:column;gap:12px;width:100%;}
+  .share-btn{background:#1f8a4c;color:#fff;box-shadow:0 6px 0 #146437;}
+  .share-btn:active{box-shadow:0 3px 0 #146437;}
+  footer a, footer button{color:#cdbf94;background:none;border:none;font:inherit;text-decoration:underline;cursor:pointer;padding:0;}
+  footer{color:#a89968;font-size:11.5px;text-align:center;font-family:'Karla',sans-serif;padding-top:4px;}
+  [hidden]{display:none!important;}
+</style>
+<style>
+@font-face{font-family:'Karla';font-style:normal;font-weight:400;font-display:swap;src:url(fonts/karla-latin-400-normal.woff2) format('woff2');}
+@font-face{font-family:'Karla';font-style:normal;font-weight:500;font-display:swap;src:url(fonts/karla-latin-500-normal.woff2) format('woff2');}
+@font-face{font-family:'Karla';font-style:normal;font-weight:700;font-display:swap;src:url(fonts/karla-latin-700-normal.woff2) format('woff2');}
+@font-face{font-family:'Fraunces';font-style:normal;font-weight:500;font-display:swap;src:url(fonts/fraunces-latin-500-normal.woff2) format('woff2');}
+@font-face{font-family:'Fraunces';font-style:normal;font-weight:600;font-display:swap;src:url(fonts/fraunces-latin-600-normal.woff2) format('woff2');}
+@font-face{font-family:'Fraunces';font-style:normal;font-weight:700;font-display:swap;src:url(fonts/fraunces-latin-700-normal.woff2) format('woff2');}
+html,body{height:100%;}
+body{-webkit-tap-highlight-color:transparent;-webkit-user-select:none;user-select:none;overscroll-behavior:none;}
+input{-webkit-user-select:text;user-select:text;}
+</style>
+
+<div class="wrap">
+
+  <div class="topbar">
+    <div class="brand">
+      <h1>Generala</h1>
+    </div>
+    <button class="icon-btn" id="rules-btn" type="button">📖 Reglas</button>
+  </div>
+
+  <!-- SETUP -->
+  <section id="screen-setup" class="panel">
+    <div>
+      <h3 style="margin:0 0 6px;font-size:18px;">¿Cómo jugamos?</h3>
+      <p>Elegí modo. Tirás los dados hasta 3 veces por turno, guardando los que quieras entre tirada y tirada, y anotás en una de las 11 casillas.</p>
+      <div class="setup-links" style="margin-top:6px;">
+        <button class="link-btn" id="replay-onboarding" type="button">¿Primera vez? Ver cómo se juega</button>
+      </div>
+    </div>
+    <div class="mode-grid">
+      <button class="mode-card selected" data-mode="cpu" id="mode-cpu">
+        <span class="mc-title">Vs. la máquina</span>
+        <span class="mc-sub">Jugás solo contra la CPU</span>
+      </button>
+      <button class="mode-card" data-mode="pass" id="mode-pass">
+        <span class="mc-title">Pasar el teléfono</span>
+        <span class="mc-sub">2 a 4 jugadores, mismo dispositivo</span>
+      </button>
+    </div>
+
+    <div id="cpu-config" class="name-list">
+      <label class="field">
+        <span class="field-label">Tu nombre</span>
+        <input type="text" id="me-name" maxlength="14" placeholder="¿Cómo te llamás?" autocomplete="given-name">
+      </label>
+      <div class="field">
+        <span class="field-label">Tu rival</span>
+        <div class="field-row">
+          <input type="text" id="rival-name" maxlength="14" placeholder="Nombre del rival" aria-label="Nombre del rival">
+          <button class="reroll" id="rival-reroll" type="button" aria-label="Otro rival al azar" title="Otro rival al azar">🎲</button>
+        </div>
+      </div>
+    </div>
+
+    <div id="pass-config" hidden>
+      <div class="stepper" style="margin-bottom:12px;">
+        <button id="dec-players" type="button">−</button>
+        <span class="count" id="player-count">2</span>
+        <span style="font-family:'Karla',sans-serif;font-size:13px;color:var(--ink-soft);">jugadores</span>
+        <button id="inc-players" type="button">+</button>
+      </div>
+      <div class="name-list" id="name-list"></div>
+    </div>
+
+    <button class="cta" id="resume-btn" hidden>Continuar partida</button>
+    <button class="cta" id="start-btn">Empezar partida</button>
+
+    <div class="setup-extras" id="setup-extras" hidden>
+      <label class="toggle-row" id="reminder-row" hidden>
+        <span>Recordarme jugar una partida por día</span>
+        <input type="checkbox" id="reminder-toggle">
+      </label>
+      <button class="cta secondary" id="remove-ads-btn" type="button" hidden>Quitar anuncios</button>
+    </div>
+  </section>
+
+  <!-- GAME -->
+  <section id="screen-game" hidden style="display:flex;flex-direction:column;gap:14px;">
+    <div class="turn-banner">
+      <span class="who"><span class="dot"></span><span id="turn-name">Jugador 1</span></span>
+      <span class="roll-pill">Tirada <span class="roll-count" id="roll-count">0/3</span></span>
+    </div>
+
+    <div class="tray">
+      <div class="dice-row" id="dice-row"></div>
+      <div class="tray-hint" id="servida-slot">
+        <span class="servida-flag" id="servida-flag" hidden>Servida · bonus si anotás ahora</span>
+      </div>
+      <div class="tray-hint-text" id="hold-hint-btn">Tocá «Tirar los dados» para empezar</div>
+      <div class="tray-actions">
+        <button class="cta" id="roll-btn" type="button">Tirar los dados</button>
+      </div>
+      <button class="reward-btn" id="extra-roll-btn" type="button" hidden>🎬 Ver un anuncio y tirar una vez más</button>
+    </div>
+
+    <div class="board-wrap">
+      <div class="board-scroll">
+        <table class="board" id="board-table"></table>
+      </div>
+    </div>
+  </section>
+
+  <!-- RESULTS -->
+  <section id="screen-results" hidden class="result-card">
+    <div class="trophy">🏆</div>
+    <h2 id="winner-title">¡Ganó Jugador 1!</h2>
+    <div class="final-list" id="final-list"></div>
+    <div class="result-actions">
+      <button class="cta" id="again-btn">Jugar de nuevo</button>
+      <button class="cta share-btn" id="share-btn" type="button">Invitar a jugar por WhatsApp</button>
+    </div>
+  </section>
+
+  <footer>Generala · <button type="button" id="privacy-link">Privacidad</button><span id="privacy-opts-wrap" hidden> · <button type="button" id="privacy-opts">Opciones de anuncios</button></span></footer>
+</div>
+
+<div class="overlay" id="pass-overlay" hidden>
+  <h2 id="pass-overlay-name">Turno de Jugador 2</h2>
+  <p>Pasá el teléfono y tocá "Listo" cuando lo tengas vos.</p>
+  <button class="cta" id="pass-ready-btn">Listo, ¡a jugar!</button>
+</div>
+
+
+<div class="sheet-backdrop" id="onboarding" hidden>
+  <div class="sheet" role="dialog" aria-modal="true" aria-labelledby="ob-title">
+    <span class="ob-step-label" id="ob-step-label">Paso 1 de 5</span>
+    <h2 id="ob-title"></h2>
+    <div class="ob-visual" id="ob-visual"></div>
+    <div id="ob-body"></div>
+    <div class="ob-dots" id="ob-dots"></div>
+    <div class="ob-nav">
+      <button class="cta secondary" id="ob-prev" type="button">Atrás</button>
+      <button class="cta" id="ob-next" type="button">Siguiente</button>
+    </div>
+    <button class="link-btn" id="ob-skip" type="button">Saltar, ya sé jugar</button>
+  </div>
+</div>
+
+<div class="sheet-backdrop" id="rules" hidden>
+  <div class="sheet" role="dialog" aria-modal="true" aria-labelledby="rules-title">
+    <h2 id="rules-title">Reglas de la Generala</h2>
+    <h3>El objetivo</h3>
+    <p>La planilla tiene <b>11 casillas</b>. En cada turno llenás una. Cuando todos llenan todas, gana quien suma <b>más puntos</b>.</p>
+    <h3>Tu turno</h3>
+    <ul>
+      <li>Tirás los 5 dados.</li>
+      <li>Tocá los dados que querés <b>guardar</b> y volvé a tirar el resto. Hasta <b>3 tiradas</b> en total.</li>
+      <li>Podés parar cuando quieras y anotar.</li>
+      <li>Cada casilla se usa <b>una sola vez</b>. Si ninguna te sirve, anotás 0 en una: eso es <b>tachar</b>.</li>
+    </ul>
+    <h3>Las jugadas</h3>
+    <div class="combo-list" id="rules-combos"></div>
+    <h3>Servida</h3>
+    <p>Si armás la jugada <b>en la primera tirada</b>, sin volver a tirar, es <b>servida</b> y vale más.</p>
+    <table class="pts-table">
+      <thead><tr><th>Jugada</th><th>Normal</th><th>Servida</th></tr></thead>
+      <tbody>
+        <tr><td>Escalera</td><td>20</td><td>25</td></tr>
+        <tr><td>Full</td><td>30</td><td>35</td></tr>
+        <tr><td>Póker</td><td>40</td><td>45</td></tr>
+        <tr><td>Generala</td><td>50</td><td>100</td></tr>
+        <tr><td>Generala doble</td><td>100</td><td>100</td></tr>
+      </tbody>
+    </table>
+    <h3>Consejos para arrancar</h3>
+    <ul>
+      <li>Si te salen 3 iguales, guardalos: vas camino a póker o generala.</li>
+      <li>Si tenés que tachar, tachá los unos o los doses: valen poco.</li>
+      <li>No taches la generala temprano: es la jugada que da vuelta partidas.</li>
+    </ul>
+    <p style="font-size:13px;">Tip: en la partida, tocá el nombre de cualquier casilla para ver qué es.</p>
+    <button class="cta" id="rules-close" type="button">Entendido</button>
+  </div>
+</div>
+
+<div class="toast" id="toast" hidden></div>
+
+<div class="undo-bar" id="undo-bar" hidden>
+  <span id="undo-text">Tachaste una casilla.</span>
+  <button type="button" id="undo-btn">🎬 Deshacer</button>
+  <div class="timer" id="undo-timer"></div>
+</div>
+
+<div class="sheet-backdrop" id="offer" hidden>
+  <div class="sheet" role="dialog" aria-modal="true" aria-labelledby="offer-title">
+    <h2 id="offer-title">¿Jugamos sin anuncios?</h2>
+    <p>Con un solo pago sacás los anuncios entre partidas para siempre. Los anuncios opcionales (tirada extra, deshacer) siguen disponibles si los querés.</p>
+    <button class="cta" id="offer-buy" type="button">Quitar anuncios</button>
+    <button class="link-btn" id="offer-close" type="button">Ahora no</button>
+  </div>
+</div>
+<script>
+(function(){
+  "use strict";
+
+  // ---------------- Native bridge (Android) with browser fallback ----------------
+  var N = window.GeneralaNative || null;
+  var PLAY_URL = "https://play.google.com/store/apps/details?id=com.nestordelrio.generala";
+  var PRIVACY_URL = "https://claude.ai/artifact/GsV9BoFUhKBacPvEnVQYV3";
+  var pendingReward = null;
+  function call(fn, fallback){ try{ return fn(); }catch(e){ return fallback; } }
+  var Native = {
+    has: !!N,
+    get: function(k){ return call(function(){ return N ? N.loadState(k) : localStorage.getItem(k); }, null) || null; },
+    set: function(k, v){ call(function(){
+      if(N){ N.saveState(k, v == null ? "" : String(v)); }
+      else if(v == null){ localStorage.removeItem(k); } else { localStorage.setItem(k, v); }
+    }); },
+    haptic: function(kind){ call(function(){
+      if(N) N.haptic(kind);
+      else if(navigator.vibrate) navigator.vibrate(kind === "win" ? [30,40,60] : (kind === "score" ? 18 : 8));
+    }); },
+    gameFinished: function(won){ call(function(){ if(N) N.onGameFinished(!!won); }); },
+    playAgain: function(){ call(function(){ if(N) N.onPlayAgain(); }); },
+    rewardedReady: function(){ return call(function(){ return N ? !!N.isRewardedReady() : true; }, false); },
+    showRewarded: function(reason, cb){
+      pendingReward = cb;
+      if(N){ call(function(){ N.showRewarded(reason); }, null); }
+      else { setTimeout(function(){ App.onRewardResult(reason, true); }, 250); }
+    },
+    adsRemoved: function(){ return call(function(){ return N ? !!N.hasRemovedAds() : false; }, false); },
+    removeAdsPrice: function(){ return call(function(){ return N ? (N.getRemoveAdsPrice() || "") : ""; }, ""); },
+    buyRemoveAds: function(){ call(function(){ if(N) N.purchaseRemoveAds(); }); },
+    share: function(text){ call(function(){
+      if(N){ N.share(text); }
+      else if(navigator.share){ navigator.share({text:text}).catch(function(){}); }
+      else { window.open("https://wa.me/?text=" + encodeURIComponent(text), "_blank"); }
+    }); },
+    reminderEnabled: function(){ return call(function(){ return N ? !!N.isReminderEnabled() : false; }, false); },
+    setReminder: function(on){ call(function(){ if(N) N.setReminderEnabled(!!on); }); },
+    privacyOptionsRequired: function(){ return call(function(){ return N ? !!N.isPrivacyOptionsRequired() : false; }, false); },
+    showPrivacyOptions: function(){ call(function(){ if(N) N.showPrivacyOptions(); }); },
+    openPrivacy: function(){ call(function(){ if(N) N.openPrivacyPolicy(); else window.open(PRIVACY_URL, "_blank"); }); }
+  };
+  var App = window.GeneralaApp = {
+    onRewardResult: function(reason, granted){
+      var cb = pendingReward; pendingReward = null;
+      if(cb) cb(!!granted);
+    },
+    onAdsStateChanged: function(){ renderExtras(); },
+    onReminderChanged: function(on){ var t = document.getElementById("reminder-toggle"); if(t) t.checked = !!on; },
+    onOfferRemoveAds: function(){ if(!Native.adsRemoved()) openOffer(); },
+    onToast: function(msg){ showToast(msg); },
+    onBack: function(){ return handleBack(); }
+  };
+
+  var CATS = [
+    {key:"unos", label:"1 · Ases", face:1},
+    {key:"doses", label:"2 · Doses", face:2},
+    {key:"treses", label:"3 · Treses", face:3},
+    {key:"cuatros", label:"4 · Cuatros", face:4},
+    {key:"cincos", label:"5 · Cincos", face:5},
+    {key:"seises", label:"6 · Seises", face:6},
+    {key:"escalera", label:"Escalera"},
+    {key:"full", label:"Full"},
+    {key:"poker", label:"Póker"},
+    {key:"generala", label:"Generala"},
+    {key:"generalaDoble", label:"Generala Doble"}
+  ];
+
+  var PIP_MAP = {
+    1:[5], 2:[1,9], 3:[1,5,9], 4:[1,3,7,9], 5:[1,3,5,7,9], 6:[1,3,4,6,7,9]
+  };
+
+  function counts(dice){
+    var c = {1:0,2:0,3:0,4:0,5:0,6:0};
+    dice.forEach(function(d){ c[d]++; });
+    return c;
+  }
+  function countValues(c){
+    return Object.keys(c).map(function(k){return c[k];}).filter(function(n){return n>0;}).sort(function(a,b){return a-b;});
+  }
+  function isStraight(dice){
+    var s = dice.slice().sort(function(a,b){return a-b;}).join(",");
+    return s === "1,2,3,4,5" || s === "2,3,4,5,6";
+  }
+
+  function rawScore(catKey, dice){
+    var c = counts(dice);
+    var cv = countValues(c);
+    switch(catKey){
+      case "unos": return c[1]*1;
+      case "doses": return c[2]*2;
+      case "treses": return c[3]*3;
+      case "cuatros": return c[4]*4;
+      case "cincos": return c[5]*5;
+      case "seises": return c[6]*6;
+      case "escalera": return isStraight(dice) ? 20 : 0;
+      case "full": return (cv.length===2 && cv[0]===2 && cv[1]===3) ? 30 : 0;
+      case "poker": return (cv.length && cv[cv.length-1]>=4) ? 40 : 0;
+      case "generala": return (cv.length===1 && cv[0]===5) ? 50 : 0;
+      default: return 0;
+    }
+  }
+
+  function finalScore(catKey, dice, servida, playerHasGenerala){
+    if(catKey === "generalaDoble"){
+      var c = counts(dice), cv = countValues(c);
+      return (cv.length===1 && cv[0]===5 && playerHasGenerala) ? 100 : 0;
+    }
+    var base = rawScore(catKey, dice);
+    if(base===0) return 0;
+    if(catKey==="escalera") return servida ? 25 : 20;
+    if(catKey==="full") return servida ? 35 : 30;
+    if(catKey==="poker") return servida ? 45 : 40;
+    if(catKey==="generala") return servida ? 100 : 50;
+    return base; // number categories: no servida bonus
+  }
+
+  // ---------------- State ----------------
+  var state = null;
+
+  function newPlayer(name, isCPU){
+    var scores = {};
+    CATS.forEach(function(c){ scores[c.key] = null; });
+    return {name:name, isCPU:!!isCPU, scores:scores};
+  }
+
+  function resetTurnState(){
+    state.dice = [1,1,1,1,1];
+    state.held = [false,false,false,false,false];
+    state.rollsUsed = 0;
+    state.maxRolls = 3;
+  }
+
+  function totalFor(p){
+    var t = 0;
+    CATS.forEach(function(c){ if(typeof p.scores[c.key] === "number") t += p.scores[c.key]; });
+    return t;
+  }
+
+  function allFilled(p){
+    return CATS.every(function(c){ return p.scores[c.key] !== null; });
+  }
+
+  function currentPlayer(){ return state.players[state.turn]; }
+
+  // ---------------- Setup screen ----------------
+  var mode = "cpu";
+  var playerCount = 2;
+  var names = ["", "", "", ""];
+  var RIVALS = ["Don Tito","La Tía Chela","El Flaco","Abuela Rosa","Cacho","La Negra","Don Ramón","Pocha","El Turco","Mirta"];
+  var meName = "", rivalName = "";
+  function loadNames(){
+    try{
+      var d = JSON.parse(Native.get("generala_names") || "null");
+      if(d){ meName = d.me || ""; rivalName = d.rival || ""; if(d.pass && d.pass.length) names = d.pass.concat(["","","",""]).slice(0,4); if(d.count) playerCount = Math.min(4, Math.max(2, d.count)); }
+    }catch(e){}
+    if(!rivalName) rivalName = RIVALS[Math.floor(Math.random()*RIVALS.length)];
+  }
+  function saveNames(){
+    Native.set("generala_names", JSON.stringify({me:meName, rival:rivalName, pass:names, count:playerCount}));
+  }
+  function uniqueNames(list){
+    var seen = {};
+    return list.map(function(n){
+      var base = n, k = 2;
+      while(seen[n.toLowerCase()]){ n = base + " " + k; k++; }
+      seen[n.toLowerCase()] = true;
+      return n;
+    });
+  }
+
+  var elSetup = document.getElementById("screen-setup");
+  var elGame = document.getElementById("screen-game");
+  var elResults = document.getElementById("screen-results");
+  var elPassConfig = document.getElementById("pass-config");
+  var elNameList = document.getElementById("name-list");
+  var elPlayerCount = document.getElementById("player-count");
+  var elCpuConfig = document.getElementById("cpu-config");
+  var elMe = document.getElementById("me-name");
+  var elRival = document.getElementById("rival-name");
+  loadNames();
+  elMe.value = meName; elRival.value = rivalName; elPlayerCount.textContent = playerCount;
+  elMe.addEventListener("input", function(){ meName = elMe.value; });
+  elRival.addEventListener("input", function(){ rivalName = elRival.value; });
+  document.getElementById("rival-reroll").addEventListener("click", function(){
+    var opts = RIVALS.filter(function(r){ return r !== elRival.value; });
+    rivalName = opts[Math.floor(Math.random()*opts.length)];
+    elRival.value = rivalName;
+  });
+
+  function renderNameInputs(){
+    elNameList.innerHTML = "";
+    for(var i=0;i<playerCount;i++){
+      var inp = document.createElement("input");
+      inp.type = "text";
+      inp.maxLength = 16;
+      inp.placeholder = "Nombre del jugador " + (i+1);
+      inp.setAttribute("aria-label", "Nombre del jugador " + (i+1));
+      inp.value = names[i] || "";
+      inp.id = "name-input-" + i;
+      inp.addEventListener("input", (function(idx){
+        return function(e){ names[idx] = e.target.value; };
+      })(i));
+      var slot = document.createElement("div");
+      slot.className = "name-slot";
+      var num = document.createElement("span");
+      num.className = "num"; num.textContent = (i+1);
+      slot.appendChild(num); slot.appendChild(inp);
+      elNameList.appendChild(slot);
+    }
+  }
+
+  document.getElementById("mode-cpu").addEventListener("click", function(){
+    mode = "cpu";
+    document.getElementById("mode-cpu").classList.add("selected");
+    document.getElementById("mode-pass").classList.remove("selected");
+    elPassConfig.hidden = true;
+    elCpuConfig.hidden = false;
+  });
+  document.getElementById("mode-pass").addEventListener("click", function(){
+    mode = "pass";
+    document.getElementById("mode-pass").classList.add("selected");
+    document.getElementById("mode-cpu").classList.remove("selected");
+    elPassConfig.hidden = false;
+    elCpuConfig.hidden = true;
+    renderNameInputs();
+  });
+  document.getElementById("dec-players").addEventListener("click", function(){
+    if(playerCount>2){ playerCount--; elPlayerCount.textContent = playerCount; renderNameInputs(); }
+  });
+  document.getElementById("inc-players").addEventListener("click", function(){
+    if(playerCount<4){ playerCount++; elPlayerCount.textContent = playerCount; renderNameInputs(); }
+  });
+
+  document.getElementById("start-btn").addEventListener("click", function(){
+    var players = [];
+    if(mode === "cpu"){
+      var pair = uniqueNames([ (meName.trim() || "Vos"), (rivalName.trim() || "CPU") ]);
+      players.push(newPlayer(pair[0], false));
+      players.push(newPlayer(pair[1], true));
+    } else {
+      var list = [];
+      for(var i=0;i<playerCount;i++){
+        var nm = (document.getElementById("name-input-"+i) || {}).value;
+        list.push((nm && nm.trim()) || ("Jugador " + (i+1)));
+      }
+      uniqueNames(list).forEach(function(n){ players.push(newPlayer(n, false)); });
+    }
+    saveNames();
+    state = {mode:mode, players:players, turn:0, dice:[1,1,1,1,1], held:[false,false,false,false,false], rollsUsed:0, maxRolls:3, extraUsed:false, undoUsed:false};
+    elSetup.hidden = true;
+    elResults.hidden = true;
+    elGame.hidden = false;
+    beginTurn();
+  });
+
+  // ---------------- Save / resume ----------------
+  var GAME_KEY = "generala_game";
+  function saveGame(){
+    if(!state) return;
+    Native.set(GAME_KEY, JSON.stringify(state));
+  }
+  function clearGame(){ Native.set(GAME_KEY, null); }
+  function loadGame(){
+    var raw = Native.get(GAME_KEY);
+    if(!raw) return null;
+    try{
+      var g = JSON.parse(raw);
+      if(!g || !g.players || !g.players.length || g.players.every(allFilled)) return null;
+      return g;
+    }catch(e){ return null; }
+  }
+  var elResume = document.getElementById("resume-btn");
+  function refreshResume(){
+    var g = loadGame();
+    elResume.hidden = !g;
+    var sb = document.getElementById("start-btn");
+    sb.classList.toggle("secondary", !!g);
+    sb.textContent = g ? "Partida nueva" : "Empezar partida";
+    if(g) elResume.textContent = "Continuar partida · " + g.players.map(function(p){ return p.name; }).join(" vs ");
+  }
+  elResume.addEventListener("click", function(){
+    var g = loadGame();
+    if(!g) { refreshResume(); return; }
+    state = g;
+    mode = g.mode || "cpu";
+    if(typeof state.maxRolls !== "number") state.maxRolls = 3;
+    elSetup.hidden = true; elResults.hidden = true; elGame.hidden = false;
+    var p = currentPlayer();
+    if(p.isCPU){
+      beginTurn();
+    } else {
+      renderDice(false); renderBoard();
+      if(mode === "pass") showPassOverlay(p.name);
+    }
+  });
+
+  // ---------------- Dice rendering ----------------
+  var elDiceRow = document.getElementById("dice-row");
+  var elRollBtn = document.getElementById("roll-btn");
+  var elRollCount = document.getElementById("roll-count");
+  var elTurnName = document.getElementById("turn-name");
+  var elServidaFlag = document.getElementById("servida-flag");
+  var elHoldHint = document.getElementById("hold-hint-btn");
+
+  function makeDie(value, held, unrolled){
+    var die = document.createElement("div");
+    die.className = "die" + (held ? " held" : "");
+    if(unrolled) die.setAttribute("data-unrolled","true");
+    var slots = [1,2,3,4,5,6,7,8,9];
+    var active = PIP_MAP[value] || [];
+    slots.forEach(function(s){
+      var pip = document.createElement("span");
+      pip.className = "pip" + (active.indexOf(s)>=0 && !unrolled ? " on" : "");
+      die.appendChild(pip);
+    });
+    if(held){
+      var tag = document.createElement("span");
+      tag.className = "held-tag";
+      tag.textContent = "GUARDADO";
+      die.appendChild(tag);
+    }
+    return die;
+  }
+
+  function renderDice(animate){
+    elDiceRow.innerHTML = "";
+    var unrolled = state.rollsUsed === 0;
+    state.dice.forEach(function(v, i){
+      var held = state.held[i];
+      var die = makeDie(v, held, unrolled);
+      if(animate && !held) die.classList.add("rolling");
+      die.addEventListener("click", function(){
+        if(state.rollsUsed === 0) return;
+        if(state.rollsUsed >= state.maxRolls) return;
+        if(currentPlayer().isCPU) return;
+        state.held[i] = !state.held[i];
+        Native.haptic("tap");
+        renderDice(false);
+        saveGame();
+      });
+      elDiceRow.appendChild(die);
+    });
+    if(currentPlayer().isCPU){
+      elHoldHint.textContent = currentPlayer().name + " está tirando…";
+    } else if(unrolled){
+      elHoldHint.textContent = "Tocá «Tirar los dados» para empezar tu turno";
+    } else if(state.rollsUsed>=state.maxRolls){
+      elHoldHint.textContent = "No quedan tiradas. Elegí una casilla en la planilla ↓ (si no te sirve ninguna, anotá 0 en una)";
+    } else {
+      elHoldHint.textContent = "Tocá los dados que querés guardar y tirá de nuevo, o anotá ya en una casilla ↓";
+    }
+    elRollCount.textContent = state.rollsUsed + "/" + state.maxRolls;
+    elServidaFlag.hidden = !(state.rollsUsed===1);
+    elRollBtn.disabled = state.rollsUsed>=state.maxRolls || currentPlayer().isCPU;
+    elRollBtn.textContent = state.rollsUsed===0 ? "Tirar los dados" : "Tirar de nuevo";
+    elExtraRoll.hidden = !(mode === "cpu" && !currentPlayer().isCPU && state.rollsUsed >= 3 &&
+      state.maxRolls === 3 && !state.extraUsed && Native.rewardedReady());
+  }
+
+  var elExtraRoll = document.getElementById("extra-roll-btn");
+  elExtraRoll.addEventListener("click", function(){
+    elExtraRoll.disabled = true;
+    Native.showRewarded("extra_roll", function(granted){
+      elExtraRoll.disabled = false;
+      if(granted){
+        state.extraUsed = true;
+        state.maxRolls = 4;
+        renderDice(false);
+        saveGame();
+        showToast("¡Tenés una tirada más! Guardá los dados que quieras y tirá.");
+      } else {
+        showToast("No se pudo cargar el anuncio. Probá en un rato.");
+        renderDice(false);
+      }
+    });
+  });
+
+  elRollBtn.addEventListener("click", function(){ doRoll(); });
+
+  function doRoll(){
+    if(state.rollsUsed >= state.maxRolls) return;
+    if(!currentPlayer().isCPU) Native.haptic("roll");
+    for(var i=0;i<5;i++){
+      if(!state.held[i]) state.dice[i] = 1 + Math.floor(Math.random()*6);
+    }
+    state.rollsUsed++;
+    renderDice(true);
+    renderBoard();
+    saveGame();
+  }
+
+  // ---------------- Board rendering ----------------
+  var elBoardTable = document.getElementById("board-table");
+
+  function renderBoard(){
+    var p = currentPlayer();
+    var servida = state.rollsUsed === 1;
+    var hasGenerala = typeof p.scores.generala === "number" && p.scores.generala > 0;
+
+    var thead = "<thead><tr><th class=\"cat-label\">Categoría</th>" +
+      state.players.map(function(pl, idx){
+        return "<th class=\""+(idx===state.turn?"active-col":"")+"\">"+escapeHtml(pl.name)+"</th>";
+      }).join("") + "</tr></thead>";
+
+    var rows = CATS.map(function(cat){
+      var cells = state.players.map(function(pl, idx){
+        var val = pl.scores[cat.key];
+        if(typeof val === "number"){
+          return "<td class=\"cell-score cell-filled\">" + val + "</td>";
+        }
+        if(idx === state.turn && state.rollsUsed > 0){
+          var potential = finalScore(cat.key, state.dice, servida, hasGenerala);
+          var canScore = potential > 0;
+          return "<td class=\"cell-score\"><button class=\"cell-empty-btn"+(canScore?" can-score":"")+"\" data-cat=\""+cat.key+"\">" + potential + "</button></td>";
+        }
+        return "<td class=\"cell-score cell-dash\">—</td>";
+      }).join("");
+      return "<tr><td class=\"cat-label\"><button type=\"button\" class=\"cat-help\" data-help=\""+cat.key+"\">"+cat.label+"</button></td>"+cells+"</tr>";
+    }).join("");
+
+    var tfoot = "<tfoot><tr><td class=\"cat-label\">Total</td>" +
+      state.players.map(function(pl){ return "<td>"+totalFor(pl)+"</td>"; }).join("") +
+      "</tr></tfoot>";
+
+    elBoardTable.innerHTML = thead + "<tbody>" + rows + "</tbody>" + tfoot;
+    elTurnName.textContent = p.isCPU ? (p.name + " está pensando…") : ("Turno de " + p.name);
+
+    Array.prototype.forEach.call(elBoardTable.querySelectorAll(".cat-help"), function(b){
+      b.addEventListener("click", function(){ showCatHelp(b.getAttribute("data-help")); });
+    });
+
+    if(!p.isCPU){
+      Array.prototype.forEach.call(elBoardTable.querySelectorAll(".cell-empty-btn"), function(btn){
+        btn.addEventListener("click", function(){
+          commitScore(btn.getAttribute("data-cat"));
+        });
+      });
+    }
+  }
+
+  function escapeHtml(s){
+    return String(s).replace(/[&<>"']/g, function(c){
+      return {"&":"&amp;","<":"&lt;",">":"&gt;","\"":"&quot;","'":"&#39;"}[c];
+    });
+  }
+
+  function commitScore(catKey){
+    var p = currentPlayer();
+    if(typeof p.scores[catKey] === "number") return;
+    if(state.rollsUsed === 0) return;
+    var servida = state.rollsUsed === 1;
+    var hasGenerala = typeof p.scores.generala === "number" && p.scores.generala > 0;
+    var val = finalScore(catKey, state.dice, servida, hasGenerala);
+    var snapshot = null;
+    if(!p.isCPU){
+      Native.haptic("score");
+      if(mode === "cpu" && val === 0 && !state.undoUsed){
+        snapshot = {turn:state.turn, cat:catKey, dice:state.dice.slice(), held:state.held.slice(),
+                    rollsUsed:state.rollsUsed, maxRolls:state.maxRolls};
+      }
+    }
+    p.scores[catKey] = val;
+    undoSnapshot = snapshot;
+    advanceTurn();
+  }
+
+  // ---------------- Undo (rewarded) ----------------
+  var undoSnapshot = null, cpuTimer = null, undoTimer = null;
+  var elUndo = document.getElementById("undo-bar");
+  var elUndoTimer = document.getElementById("undo-timer");
+  var UNDO_MS = 4500;
+  function offerUndo(){
+    var cat = CATS.filter(function(c){ return c.key === undoSnapshot.cat; })[0];
+    document.getElementById("undo-text").textContent = "Tachaste " + cat.label.replace(/^\d · /, "") + ". ¿Te arrepentiste?";
+    elUndoTimer.style.animation = "none"; void elUndoTimer.offsetWidth;
+    elUndoTimer.style.animation = "shrink " + UNDO_MS + "ms linear forwards";
+    elUndo.hidden = false;
+    undoTimer = setTimeout(dismissUndo, UNDO_MS);
+  }
+  function dismissUndo(){
+    clearTimeout(undoTimer);
+    elUndo.hidden = true;
+    undoSnapshot = null;
+    if(state && currentPlayer().isCPU && !cpuTimer){ cpuTimer = setTimeout(cpuTakeTurn, 300); }
+  }
+  document.getElementById("undo-btn").addEventListener("click", function(){
+    if(!undoSnapshot) return;
+    clearTimeout(undoTimer);
+    var snap = undoSnapshot;
+    elUndo.hidden = true;
+    Native.showRewarded("undo", function(granted){
+      if(!granted){ undoSnapshot = null; showToast("No se pudo cargar el anuncio."); dismissUndo(); return; }
+      undoSnapshot = null;
+      state.undoUsed = true;
+      state.turn = snap.turn;
+      state.players[snap.turn].scores[snap.cat] = null;
+      state.dice = snap.dice; state.held = snap.held; state.rollsUsed = snap.rollsUsed; state.maxRolls = snap.maxRolls;
+      renderDice(false); renderBoard(); saveGame();
+      showToast("Listo, volviste a antes de anotar.");
+    });
+  });
+
+  function advanceTurn(){
+    if(state.players.every(allFilled)){
+      showResults();
+      return;
+    }
+    state.turn = (state.turn + 1) % state.players.length;
+    beginTurn();
+  }
+
+  function beginTurn(){
+    resetTurnState();
+    renderDice(false);
+    renderBoard();
+    saveGame();
+    var p = currentPlayer();
+    clearTimeout(cpuTimer); cpuTimer = null;
+    if(mode === "pass" && !p.isCPU){
+      showPassOverlay(p.name);
+    } else if(p.isCPU){
+      if(undoSnapshot && Native.rewardedReady()){ offerUndo(); }
+      else { undoSnapshot = null; cpuTimer = setTimeout(cpuTakeTurn, 500); }
+    }
+  }
+
+  // ---------------- Pass-the-phone overlay ----------------
+  var elOverlay = document.getElementById("pass-overlay");
+  var elOverlayName = document.getElementById("pass-overlay-name");
+  document.getElementById("pass-ready-btn").addEventListener("click", function(){
+    elOverlay.hidden = true;
+  });
+  function showPassOverlay(name){
+    elOverlayName.textContent = "Turno de " + name;
+    elOverlay.hidden = false;
+  }
+
+  // ---------------- CPU AI ----------------
+  function cpuDecideHolds(){
+    var c = counts(state.dice);
+    var faces = Object.keys(c).map(Number);
+    var cv = countValues(c);
+    var p = currentPlayer();
+    var open = CATS.filter(function(cat){ return p.scores[cat.key] === null; }).map(function(cat){return cat.key;});
+
+    // 5 of a kind already: hold everything
+    if(cv.length===1 && cv[0]===5){
+      return [true,true,true,true,true];
+    }
+    // chase 4+ of a kind toward poker/generala
+    var bestFace = null, bestCount = 0;
+    faces.forEach(function(f){ if(c[f] > bestCount){ bestCount=c[f]; bestFace=f; } });
+    if(bestCount >= 3 && (open.indexOf("generala")>=0 || open.indexOf("poker")>=0)){
+      return state.dice.map(function(d){ return d === bestFace; });
+    }
+    // chase straight
+    if(open.indexOf("escalera")>=0){
+      var uniq = faces.filter(function(f){ return c[f]>0; }).sort(function(a,b){return a-b;});
+      var lowRun = [1,2,3,4,5].filter(function(v){ return uniq.indexOf(v)>=0; });
+      var highRun = [2,3,4,5,6].filter(function(v){ return uniq.indexOf(v)>=0; });
+      var run = highRun.length >= lowRun.length ? highRun : lowRun;
+      if(run.length >= 3){
+        var used = {};
+        return state.dice.map(function(d){
+          if(run.indexOf(d)>=0 && !used[d]){ used[d]=true; return true; }
+          return false;
+        });
+      }
+    }
+    // chase full house: hold the pair + triple if partially there
+    if(open.indexOf("full")>=0 && bestCount>=2){
+      var secondFace=null, secondCount=0;
+      faces.forEach(function(f){ if(f!==bestFace && c[f]>secondCount){ secondCount=c[f]; secondFace=f; } });
+      if(secondCount>=2){
+        return state.dice.map(function(d){ return d===bestFace || d===secondFace; });
+      }
+    }
+    // fall back: hold dice matching the highest-value open number category with count>=2
+    var numFaces = ["seises","cincos","cuatros","treses","doses","unos"];
+    for(var i=0;i<numFaces.length;i++){
+      var faceNum = CATS.filter(function(c2){return c2.key===numFaces[i];})[0].face;
+      if(open.indexOf(numFaces[i])>=0 && c[faceNum]>=2){
+        return state.dice.map(function(d){ return d===faceNum; });
+      }
+    }
+    return [false,false,false,false,false];
+  }
+
+  function cpuChooseCategory(){
+    var p = currentPlayer();
+    var servida = state.rollsUsed === 1;
+    var hasGenerala = typeof p.scores.generala === "number" && p.scores.generala > 0;
+    var open = CATS.filter(function(cat){ return p.scores[cat.key] === null; });
+    var scored = open.map(function(cat){
+      return {key:cat.key, val: finalScore(cat.key, state.dice, servida, hasGenerala)};
+    });
+    var positive = scored.filter(function(s){ return s.val>0; });
+    if(positive.length){
+      positive.sort(function(a,b){ return b.val - a.val; });
+      return positive[0].key;
+    }
+    // nothing achieved: zero out the least strategically valuable open category
+    var zeroPriority = ["unos","doses","treses","escalera","cuatros","full","cincos","poker","seises","generalaDoble","generala"];
+    for(var i=0;i<zeroPriority.length;i++){
+      if(open.some(function(c){return c.key===zeroPriority[i];})) return zeroPriority[i];
+    }
+    return open[0].key;
+  }
+
+  function cpuTakeTurn(){
+    cpuTimer = null;
+    if(!state || elGame.hidden || !currentPlayer().isCPU) return;
+    if(state.rollsUsed < 3){
+      doRoll();
+      setTimeout(function(){
+        if(!state || elGame.hidden) return;
+        if(state.rollsUsed >= 3){
+          setTimeout(finishCpuTurn, 450);
+          return;
+        }
+        var holds = cpuDecideHolds();
+        state.held = holds;
+        renderDice(false);
+        setTimeout(cpuTakeTurn, 550);
+      }, 450);
+    } else {
+      finishCpuTurn();
+    }
+  }
+
+  function finishCpuTurn(){
+    if(!state || elGame.hidden || !currentPlayer().isCPU) return;
+    var cat = cpuChooseCategory();
+    commitScore(cat);
+  }
+
+  // ---------------- Results ----------------
+  function showResults(){
+    elGame.hidden = true;
+    elResults.hidden = false;
+    var ranked = state.players.slice().sort(function(a,b){ return totalFor(b) - totalFor(a); });
+    var top = totalFor(ranked[0]);
+    var winners = ranked.filter(function(p){ return totalFor(p)===top; });
+    document.getElementById("winner-title").textContent =
+      winners.length>1 ? "¡Empate entre " + winners.map(function(p){return p.name;}).join(" y ") + "!"
+                        : (mode==="cpu" && !winners[0].isCPU ? "¡Ganaste, " + winners[0].name + "!" : "¡Ganó " + winners[0].name + "!");
+    var list = document.getElementById("final-list");
+    list.innerHTML = "";
+    ranked.forEach(function(p){
+      var row = document.createElement("div");
+      row.className = "final-row" + (totalFor(p)===top ? " winner" : "");
+      row.innerHTML = "<span class=\"name\">"+escapeHtml(p.name)+"</span><span class=\"pts\">"+totalFor(p)+" pts</span>";
+      list.appendChild(row);
+    });
+    var humanWon = winners.some(function(p){ return !p.isCPU; });
+    lastShareText = "Jugamos a la Generala 🎲 " + ranked.map(function(p){ return p.name + " " + totalFor(p); }).join(" · ") +
+      ". ¿Te animás a una partida? " + PLAY_URL;
+    clearGame();
+    Native.haptic(humanWon ? "win" : "score");
+    Native.gameFinished(mode === "cpu" ? humanWon : true);
+  }
+  var lastShareText = "";
+  document.getElementById("share-btn").addEventListener("click", function(){ Native.share(lastShareText); });
+
+  document.getElementById("again-btn").addEventListener("click", function(){
+    elResults.hidden = true;
+    elSetup.hidden = false;
+    state = null;
+    refreshResume();
+    renderExtras();
+    Native.playAgain();
+  });
+
+  // ---------------- Extras: remove ads, reminder, privacy, back ----------------
+  var elExtras = document.getElementById("setup-extras");
+  var elRemoveAds = document.getElementById("remove-ads-btn");
+  var elReminderRow = document.getElementById("reminder-row");
+  var elReminder = document.getElementById("reminder-toggle");
+  function renderExtras(){
+    document.getElementById("privacy-opts-wrap").hidden = !Native.privacyOptionsRequired();
+    if(!Native.has){ elExtras.hidden = true; return; }
+    elExtras.hidden = false;
+    elReminderRow.hidden = false;
+    elReminder.checked = Native.reminderEnabled();
+    var price = Native.removeAdsPrice();
+    elRemoveAds.hidden = Native.adsRemoved() || !price;
+    elRemoveAds.textContent = "Quitar anuncios · " + price;
+    document.getElementById("offer-buy").textContent = price ? ("Quitar anuncios · " + price) : "Quitar anuncios";
+    if(Native.adsRemoved()) document.getElementById("offer").hidden = true;
+  }
+  elRemoveAds.addEventListener("click", function(){ Native.buyRemoveAds(); });
+  elReminder.addEventListener("change", function(){ Native.setReminder(elReminder.checked); });
+  document.getElementById("privacy-link").addEventListener("click", function(){ Native.openPrivacy(); });
+  document.getElementById("privacy-opts").addEventListener("click", function(){ Native.showPrivacyOptions(); });
+  var elOffer = document.getElementById("offer");
+  function openOffer(){ renderExtras(); elOffer.hidden = false; }
+  document.getElementById("offer-buy").addEventListener("click", function(){ elOffer.hidden = true; Native.buyRemoveAds(); });
+  document.getElementById("offer-close").addEventListener("click", function(){ elOffer.hidden = true; });
+  elOffer.addEventListener("click", function(e){ if(e.target === elOffer) elOffer.hidden = true; });
+
+  function handleBack(){
+    var sheets = ["offer","rules","onboarding"];
+    for(var i=0;i<sheets.length;i++){
+      var el = document.getElementById(sheets[i]);
+      if(!el.hidden){ if(sheets[i]==="onboarding") closeOb(); else el.hidden = true; return true; }
+    }
+    if(!elUndo.hidden){ dismissUndo(); return true; }
+    if(!elGame.hidden || !elOverlay.hidden){
+      clearTimeout(cpuTimer); cpuTimer = null;
+      if(state && !currentPlayer().isCPU) saveGame();
+      elOverlay.hidden = true; elGame.hidden = true; elSetup.hidden = false;
+      refreshResume(); renderExtras();
+      return true;
+    }
+    if(!elResults.hidden){ elResults.hidden = true; elSetup.hidden = false; refreshResume(); renderExtras(); return true; }
+    return false;
+  }
+
+  // ---------------- Onboarding, rules, help ----------------
+  function miniDice(values, opts){
+    opts = opts || {};
+    var row = document.createElement("div");
+    row.className = "mini-row";
+    values.forEach(function(v, i){
+      var d = document.createElement("div");
+      d.className = "mini-die" + (opts.held && opts.held[i] ? " held" : "") + (opts.dim && opts.dim[i] ? " dim" : "");
+      for(var s=1;s<=9;s++){
+        var pip = document.createElement("span");
+        pip.className = "pip" + ((PIP_MAP[v]||[]).indexOf(s)>=0 ? " on" : "");
+        d.appendChild(pip);
+      }
+      row.appendChild(d);
+    });
+    return row;
+  }
+
+  var COMBOS = [
+    {key:"numeros", name:"Números (1 al 6)", pts:"suma", dice:[4,4,4,2,6], dim:[0,0,0,1,1],
+     desc:"Sumás solo los dados de ese número. Con 4-4-4, en «Cuatros» anotás 12."},
+    {key:"escalera", name:"Escalera", pts:"20", dice:[2,3,4,5,6],
+     desc:"5 números seguidos: 1-2-3-4-5 o 2-3-4-5-6."},
+    {key:"full", name:"Full", pts:"30", dice:[3,3,3,5,5],
+     desc:"3 dados iguales + 2 iguales de otro número."},
+    {key:"poker", name:"Póker", pts:"40", dice:[6,6,6,6,2],
+     desc:"4 dados iguales."},
+    {key:"generala", name:"Generala", pts:"50", dice:[5,5,5,5,5],
+     desc:"Los 5 dados iguales. La jugada más fuerte."},
+    {key:"generalaDoble", name:"Generala doble", pts:"100", dice:[1,1,1,1,1],
+     desc:"Una segunda generala. Solo vale si ya anotaste una generala antes."}
+  ];
+
+  function comboEl(c){
+    var el = document.createElement("div");
+    el.className = "combo";
+    el.innerHTML = "<span class=\"c-name\">"+c.name+"</span><span class=\"c-pts\">"+c.pts+(c.pts==="suma"?"":" pts")+"</span>";
+    var dim = c.dim ? c.dim.map(Boolean) : null;
+    el.appendChild(miniDice(c.dice, {dim:dim}));
+    var d = document.createElement("span");
+    d.className = "c-desc"; d.textContent = c.desc;
+    el.appendChild(d);
+    return el;
+  }
+
+  (function fillRules(){
+    var box = document.getElementById("rules-combos");
+    COMBOS.forEach(function(c){ box.appendChild(comboEl(c)); });
+  })();
+
+  var OB_STEPS = [
+    {title:"Bienvenido a la Generala",
+     visual:function(v){ v.appendChild(miniDice([5,5,5,5,5])); cap(v,"¡Generala! Los 5 dados iguales"); },
+     body:"<p>Un juego de dados de toda la vida. Tirás <b>5 dados</b>, armás jugadas y sumás puntos.</p><p>Gana quien tiene <b>más puntos</b> cuando se llena la planilla.</p>"},
+    {title:"Hasta 3 tiradas por turno",
+     visual:function(v){ v.appendChild(miniDice([3,3,1,3,6],{held:[1,1,0,1,0]})); cap(v,"Guardaste los tres 3. Los otros dos se vuelven a tirar."); },
+     body:"<p>Tirás los 5 dados. <b>Tocá los que te gusten</b> para guardarlos y volvé a tirar el resto.</p><p>Tenés hasta <b>3 tiradas</b>. Podés parar antes si ya tenés algo bueno.</p>"},
+    {title:"Anotá en una casilla",
+     visual:function(v){ v.appendChild(miniDice([3,3,3,3,6])); cap(v,"Con esto podés anotar Póker (40) o Treses (12)"); },
+     body:"<p>Al terminar tu turno elegís <b>una casilla</b> de la planilla. La app te muestra cuánto vale cada una con tus dados.</p><p>Cada casilla se usa <b>una sola vez</b>. Si ninguna te sirve, anotás 0 en una: eso se llama <b>tachar</b>.</p>"},
+    {title:"Las jugadas",
+     visual:null,
+     body:function(b){ var l=document.createElement("div"); l.className="combo-list"; COMBOS.forEach(function(c){ l.appendChild(comboEl(c)); }); b.appendChild(l); }},
+    {title:"Servida: el bonus",
+     visual:function(v){ v.appendChild(miniDice([3,3,3,5,5])); cap(v,"Full de primera: servido, vale 35 en vez de 30"); },
+     body:"<p>Si armás la jugada <b>en la primera tirada</b>, sin volver a tirar, es <b>servida</b> y vale más: +5 en escalera, full y póker, y la generala servida vale <b>100</b>.</p><p>Si te olvidás de algo, tocá <b>📖 Reglas</b> arriba o el nombre de cualquier casilla.</p>"}
+  ];
+  function cap(v, t){ var c=document.createElement("span"); c.className="cap"; c.textContent=t; v.appendChild(c); }
+
+  var elOb = document.getElementById("onboarding");
+  var obIdx = 0;
+  function renderOb(){
+    var st = OB_STEPS[obIdx];
+    document.getElementById("ob-step-label").textContent = "Paso " + (obIdx+1) + " de " + OB_STEPS.length;
+    document.getElementById("ob-title").textContent = st.title;
+    var v = document.getElementById("ob-visual"); v.innerHTML = "";
+    v.hidden = !st.visual; if(st.visual) st.visual(v);
+    var b = document.getElementById("ob-body"); b.innerHTML = "";
+    if(typeof st.body === "function") st.body(b); else b.innerHTML = st.body;
+    var dots = document.getElementById("ob-dots"); dots.innerHTML = "";
+    OB_STEPS.forEach(function(_, i){ var s=document.createElement("span"); if(i===obIdx) s.className="on"; dots.appendChild(s); });
+    document.getElementById("ob-prev").style.visibility = obIdx===0 ? "hidden" : "visible";
+    document.getElementById("ob-next").textContent = obIdx===OB_STEPS.length-1 ? "¡A jugar!" : "Siguiente";
+    elOb.querySelector(".sheet").scrollTop = 0;
+  }
+  function openOb(){ obIdx = 0; renderOb(); elOb.hidden = false; }
+  function closeOb(){
+    elOb.hidden = true;
+    Native.set("generala_onboarded","1");
+  }
+  document.getElementById("ob-next").addEventListener("click", function(){
+    if(obIdx < OB_STEPS.length-1){ obIdx++; renderOb(); } else { closeOb(); }
+  });
+  document.getElementById("ob-prev").addEventListener("click", function(){ if(obIdx>0){ obIdx--; renderOb(); } });
+  document.getElementById("ob-skip").addEventListener("click", closeOb);
+  document.getElementById("replay-onboarding").addEventListener("click", openOb);
+
+  var elRules = document.getElementById("rules");
+  document.getElementById("rules-btn").addEventListener("click", function(){ elRules.hidden = false; elRules.querySelector(".sheet").scrollTop = 0; });
+  document.getElementById("rules-close").addEventListener("click", function(){ elRules.hidden = true; });
+  [elRules, elOb].forEach(function(bd){
+    bd.addEventListener("click", function(e){ if(e.target === bd){ if(bd===elOb) closeOb(); else bd.hidden = true; } });
+  });
+
+  var CAT_HELP = {
+    unos:"<b>Ases</b> · Sumás los 1. Tres 1 = 3 puntos.",
+    doses:"<b>Doses</b> · Sumás los 2. Tres 2 = 6 puntos.",
+    treses:"<b>Treses</b> · Sumás los 3. Tres 3 = 9 puntos.",
+    cuatros:"<b>Cuatros</b> · Sumás los 4. Tres 4 = 12 puntos.",
+    cincos:"<b>Cincos</b> · Sumás los 5. Tres 5 = 15 puntos.",
+    seises:"<b>Seises</b> · Sumás los 6. Tres 6 = 18 puntos.",
+    escalera:"<b>Escalera</b> · 1-2-3-4-5 o 2-3-4-5-6. 20 pts (25 servida).",
+    full:"<b>Full</b> · 3 iguales + 2 iguales. 30 pts (35 servido).",
+    poker:"<b>Póker</b> · 4 dados iguales. 40 pts (45 servido).",
+    generala:"<b>Generala</b> · 5 dados iguales. 50 pts (100 servida).",
+    generalaDoble:"<b>Generala doble</b> · Una segunda generala, solo si ya anotaste una. 100 pts."
+  };
+  var elToast = document.getElementById("toast"), toastTimer = null;
+  function showCatHelp(key){
+    elToast.innerHTML = CAT_HELP[key] || "";
+    elToast.hidden = false;
+    clearTimeout(toastTimer);
+    toastTimer = setTimeout(function(){ elToast.hidden = true; }, 3800);
+  }
+  function showToast(msg){
+    elToast.textContent = msg;
+    elToast.hidden = false;
+    clearTimeout(toastTimer);
+    toastTimer = setTimeout(function(){ elToast.hidden = true; }, 3200);
+  }
+  elToast.addEventListener("click", function(){ elToast.hidden = true; });
+
+  function boot(){
+    var seen = Native.get("generala_onboarded") === "1";
+    if(!seen) openOb();
+    refreshResume();
+    renderExtras();
+  }
+  if(window.claude && window.claude.hot && window.claude.hot.ready){
+    window.claude.hot.ready(boot);
+  } else {
+    boot();
+  }
+})();
+</script>
+
+
+</body>
+</html>

@@ -1,0 +1,372 @@
+<title>Generala — Privacidad</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,600;9..144,700&family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg:#faf8f3;
+    --surface:#ffffff;
+    --surface-2:#f3f0e6;
+    --border:#e4ddc9;
+    --text:#181c2e;
+    --muted:#5c6178;
+    --ink:#12172a;
+    --accent:#a9760a;
+    --accent-soft:#f4e6c6;
+    --accent2:#c1432f;
+    --link:#8a5c07;
+    --chip:#eef1fb;
+    --chip-text:#2a3466;
+    color-scheme: light;
+  }
+  @media (prefers-color-scheme: dark){
+    :root:not([data-theme="light"]){
+      --bg:#0f1424;
+      --surface:#171d34;
+      --surface-2:#1c2440;
+      --border:#2c3560;
+      --text:#f1efe6;
+      --muted:#a6acc9;
+      --ink:#f1efe6;
+      --accent:#f0c94a;
+      --accent-soft:#3a3220;
+      --accent2:#ff8a72;
+      --link:#f0c94a;
+      --chip:#232c52;
+      --chip-text:#dfe4ff;
+      color-scheme: dark;
+    }
+  }
+  :root[data-theme="dark"]{
+    --bg:#0f1424;
+    --surface:#171d34;
+    --surface-2:#1c2440;
+    --border:#2c3560;
+    --text:#f1efe6;
+    --muted:#a6acc9;
+    --ink:#f1efe6;
+    --accent:#f0c94a;
+    --accent-soft:#3a3220;
+    --accent2:#ff8a72;
+    --link:#f0c94a;
+    --chip:#232c52;
+    --chip-text:#dfe4ff;
+    color-scheme: dark;
+  }
+
+  body{
+    background:var(--bg);
+    color:var(--text);
+    font-family:'Manrope',system-ui,sans-serif;
+    padding:0 16px;
+  }
+  .wrap{ max-width:760px; margin:0 auto; padding-block:40px 80px; }
+  h1,h2,h3{ font-family:'Fraunces',serif; color:var(--ink); line-height:1.15; text-wrap:balance; }
+  h1{ font-size:2.1rem; font-weight:700; margin:0 0 6px; }
+  h2{ font-size:1.3rem; font-weight:600; margin:2.2em 0 .6em; padding-top:.3em; border-top:1px solid var(--border); }
+  h2 .num{ color:var(--accent); font-variant-numeric:tabular-nums; margin-right:.4em; }
+  p{ line-height:1.65; margin:.8em 0; }
+  a{ color:var(--link); text-decoration-color:color-mix(in srgb, var(--link) 40%, transparent); }
+  .eyebrow{
+    display:inline-block; font-family:'Manrope',sans-serif; font-weight:700; font-size:.72rem;
+    letter-spacing:.09em; text-transform:uppercase; color:var(--accent);
+    background:var(--accent-soft); padding:4px 10px; border-radius:99px; margin-bottom:14px;
+  }
+  .meta{ color:var(--muted); font-size:.92rem; margin-top:2px; }
+
+  /* language tabs */
+  .langbar{
+    position:sticky; top:env(safe-area-inset-top,0px); z-index:5;
+    background:var(--bg); padding-top:18px; padding-bottom:12px; margin-bottom:8px;
+    border-bottom:1px solid var(--border);
+  }
+  .tabs{ display:flex; gap:8px; }
+  .tab{
+    font-family:'Manrope',sans-serif; font-weight:700; font-size:.85rem;
+    border:1px solid var(--border); background:var(--surface); color:var(--muted);
+    padding:9px 16px; border-radius:99px; cursor:pointer; flex:1; text-align:center;
+  }
+  .tab[aria-selected="true"]{ background:var(--ink); color:var(--bg); border-color:var(--ink); }
+  :root[data-theme="dark"] .tab[aria-selected="true"], @media (prefers-color-scheme:dark){ }
+
+  .card{
+    background:var(--surface); border:1px solid var(--border); border-radius:16px;
+    padding:20px 22px; margin:18px 0;
+  }
+  .summary{ background:var(--chip); border:1px solid var(--border); }
+  .summary h3{ font-family:'Manrope',sans-serif; font-size:.95rem; font-weight:800; color:var(--chip-text); margin:0 0 10px; text-transform:uppercase; letter-spacing:.04em; }
+  .summary ul{ margin:0; padding-left:1.1em; color:var(--chip-text); }
+  .summary li{ margin:.35em 0; line-height:1.5; }
+
+  ul,ol{ padding-left:1.2em; line-height:1.6; }
+  li{ margin:.4em 0; }
+  table{ width:100%; border-collapse:collapse; margin:1em 0; font-size:.92rem; }
+  th,td{ text-align:left; padding:8px 10px; border-bottom:1px solid var(--border); vertical-align:top; }
+  th{ font-family:'Manrope',sans-serif; font-size:.72rem; text-transform:uppercase; letter-spacing:.05em; color:var(--muted); }
+  code{ background:var(--surface-2); border-radius:5px; padding:1px 6px; font-size:.88em; }
+
+  .contact{ display:flex; flex-wrap:wrap; gap:10px 24px; align-items:baseline; }
+  .contact b{ font-family:'Fraunces',serif; }
+  .disclaimer{ color:var(--muted); font-size:.82rem; line-height:1.6; border-top:1px solid var(--border); margin-top:2.6em; padding-top:1.2em; }
+
+  [hidden]{ display:none !important; }
+  .lang-section{ scroll-margin-top:90px; }
+</style>
+
+<div class="wrap">
+  <span class="eyebrow">Generala · com.nestordelrio.generala</span>
+  <h1 id="page-title">Política de privacidad</h1>
+  <p class="meta" id="page-meta">Última actualización: 24 de septiembre de 2026</p>
+
+  <div class="langbar">
+    <div class="tabs" role="tablist" aria-label="Idioma">
+      <button class="tab" role="tab" data-lang="es" aria-selected="true">Español</button>
+      <button class="tab" role="tab" data-lang="en" aria-selected="false">English</button>
+      <button class="tab" role="tab" data-lang="pt" aria-selected="false">Português</button>
+    </div>
+  </div>
+
+  <!-- ============ ESPAÑOL ============ -->
+  <section class="lang-section" id="es" data-lang-section="es">
+    <div class="card summary">
+      <h3>Resumen rápido</h3>
+      <ul>
+        <li>Generala no pide registro ni cuenta: no sabemos quién sos.</li>
+        <li>La partida en curso y los nombres que escribís para los jugadores se guardan solo en tu propio celular, nunca en un servidor nuestro.</li>
+        <li>Los únicos datos que salen del dispositivo son los que recopila <b>Google AdMob</b> para mostrar y medir los anuncios del juego.</li>
+        <li>Podés desactivar la personalización de anuncios desde la configuración de tu Android en cualquier momento.</li>
+      </ul>
+    </div>
+
+    <p>Esta política explica qué información se recopila cuando usás <b>Generala</b> (en algunas tiendas figura con nombres como «Generala: Juego de Dados» o «Yatzy y Generala: Dados»), el juego de dados para Android desarrollado por Nestor del Rio (paquete <code>com.nestordelrio.generala</code>).</p>
+
+    <h2><span class="num">1.</span>Responsable de los datos</h2>
+    <p>Generala es desarrollado y publicado por un desarrollador independiente, Nestor del Rio. Para cualquier consulta sobre privacidad, escribí a <a href="mailto:nestordelrio1989@gmail.com">nestordelrio1989@gmail.com</a>.</p>
+
+    <h2><span class="num">2.</span>Datos que recopila la app directamente</h2>
+    <p>Generala <b>no tiene sistema de cuentas ni registro</b>. No te pedimos nombre, email ni ningún dato personal para jugar. Lo único que se guarda es lo necesario para jugar — la partida en curso (para retomarla), los nombres que escribas para los jugadores, si activaste el recordatorio diario, si compraste «Sin anuncios» y cuántas partidas jugaste (para espaciar los anuncios) — y se guarda <b>únicamente en el almacenamiento local de tu propio dispositivo</b> (SharedPreferences de Android). Esos datos nunca se envían a nosotros ni a ningún servidor propio. Si tenés activada la copia de seguridad de Android, el sistema puede incluirlos en tu copia personal de Google; si desinstalás la app, se borran del teléfono.</p>
+
+    <h2><span class="num">3.</span>Datos recopilados por los anuncios (Google AdMob)</h2>
+    <p>Generala se financia con anuncios (intersticiales y video recompensado) provistos por <b>Google AdMob</b>, un servicio de Google. Para mostrar y medir esos anuncios, el SDK de AdMob puede recopilar en tu dispositivo:</p>
+    <table>
+      <tr><th>Dato</th><th>Para qué se usa</th></tr>
+      <tr><td>Dirección IP</td><td>Estimar tu ubicación general (país/región) para mostrar anuncios relevantes.</td></tr>
+      <tr><td>Identificador de publicidad de Android y App Set ID</td><td>Personalizar y medir anuncios entre apps, salvo que lo desactives (ver punto 5).</td></tr>
+      <tr><td>Interacciones con anuncios</td><td>Aperturas de la app, toques y reproducciones de video, para medir rendimiento de la campaña publicitaria.</td></tr>
+      <tr><td>Datos de diagnóstico</td><td>Tiempos de carga y estabilidad, para el funcionamiento técnico del anuncio.</td></tr>
+    </table>
+    <p>Estos datos los recopila y procesa Google como responsable independiente, según su propia <a href="https://policies.google.com/privacy" target="_blank" rel="noopener">Política de Privacidad</a> y viajan cifrados (TLS). Nosotros no vemos ni almacenamos esta información — no tenemos servidores propios en Generala.</p>
+
+    <h2><span class="num">4.</span>Compra de «Sin anuncios»</h2>
+    <p>La compra única «Sin anuncios» se procesa íntegramente por <b>Google Play</b>. Nosotros no recibimos tu tarjeta ni tus datos de pago: la app solo recibe de Google Play la confirmación de que la compra existe, para quitar los anuncios entre partidas. Aplica la <a href="https://policies.google.com/privacy" target="_blank" rel="noopener">Política de Privacidad de Google</a>.</p>
+
+    <h2><span class="num">5.</span>Consentimiento de anuncios y tus opciones</h2>
+    <p>La app usa el formulario de consentimiento de Google (<abbr title="User Messaging Platform">UMP</abbr>) para pedirte permiso antes de mostrar anuncios personalizados, cuando la ley de tu región lo exige (por ejemplo, RGPD en la Unión Europea/Reino Unido). Si no das tu consentimiento, vas a seguir viendo anuncios, pero no personalizados.</p>
+    <p>Además, en cualquier momento podés, desde tu propio Android:</p>
+    <ul>
+      <li>Ir a <b>Configuración → Google → Anuncios</b> y activar «Inhabilitar personalización de anuncios».</li>
+      <li>Restablecer tu identificador de publicidad desde esa misma pantalla.</li>
+      <li>Revisar y gestionar tus datos de anuncios de Google en <a href="https://myaccount.google.com/data-and-privacy" target="_blank" rel="noopener">myaccount.google.com</a>.</li>
+    </ul>
+
+    <h2><span class="num">6.</span>Menores de edad</h2>
+    <p>Generala es un juego de dados de audiencia general, sin dinero real ni apuestas, no está dirigido específicamente a menores de 13 años ni está inscripto en el programa «Diseñada para familias» de Google Play. No solicitamos ni recopilamos a sabiendas datos personales de menores. Si una solicitud de anuncio llega marcada como dirigida a un usuario menor, el identificador de publicidad no se transmite, según las políticas de Google. Recomendamos supervisión de un adulto si un menor usa la app.</p>
+
+    <h2><span class="num">7.</span>Permisos del dispositivo</h2>
+    <p>La app pide estos permisos de Android: <code>INTERNET</code> (para cargar los anuncios), <code>VIBRATE</code> (vibración al tocar y tirar los dados) y <code>POST_NOTIFICATIONS</code> (para el recordatorio diario opcional, que es una notificación generada en tu propio celular, sin conexión a ningún servidor). Generala no accede a tu cámara, micrófono, contactos, ubicación ni archivos.</p>
+
+    <h2><span class="num">8.</span>Seguridad y conservación</h2>
+    <p>Como no operamos servidores ni cuentas de usuario, no conservamos ningún dato personal tuyo de forma centralizada. Tus datos de juego viven en tu dispositivo hasta que desinstalás la app o borrás los datos de la app manualmente. Los datos que procesa Google para los anuncios se rigen por sus propios plazos de conservación, descritos en su Política de Privacidad.</p>
+
+    <h2><span class="num">9.</span>Tus derechos</h2>
+    <p>Según tu país de residencia podés tener derechos de acceso, rectificación, eliminación u oposición sobre tus datos (por ejemplo, bajo el RGPD europeo o leyes similares). Como no guardamos datos personales identificables de tu parte, la forma más directa de ejercerlos es: desinstalar la app para borrar tus datos locales, y gestionar tus datos publicitarios de Google desde tu cuenta de Google. Para cualquier otra consulta, escribinos a <a href="mailto:nestordelrio1989@gmail.com">nestordelrio1989@gmail.com</a>.</p>
+
+    <h2><span class="num">10.</span>Cambios a esta política</h2>
+    <p>Podemos actualizar esta política si cambia algo en la app o en los servicios que usa. La fecha de «última actualización» de arriba siempre va a reflejar la versión vigente, publicada en esta misma dirección.</p>
+
+    <h2><span class="num">11.</span>Contacto</h2>
+    <div class="card contact">
+      <span><b>Desarrollador:</b> Nestor del Rio</span>
+      <span><b>Email:</b> <a href="mailto:nestordelrio1989@gmail.com">nestordelrio1989@gmail.com</a></span>
+      <span><b>App:</b> com.nestordelrio.generala</span>
+    </div>
+  </section>
+
+  <!-- ============ ENGLISH ============ -->
+  <section class="lang-section" id="en" data-lang-section="en" hidden>
+    <div class="card summary">
+      <h3>Quick summary</h3>
+      <ul>
+        <li>Generala doesn't require sign-up or an account — we don't know who you are.</li>
+        <li>Your game in progress and the player names you type are saved only on your own phone, never on a server of ours.</li>
+        <li>The only data that leaves your device is what <b>Google AdMob</b> collects to show and measure the game's ads.</li>
+        <li>You can turn off ad personalization from your Android settings at any time.</li>
+      </ul>
+    </div>
+
+    <p>This policy explains what information is collected when you use <b>Generala</b> (listed under names such as "Generala: Classic Dice Game" or "Generala: Juego de Dados" depending on the store), the Android dice game developed by Nestor del Rio (package <code>com.nestordelrio.generala</code>).</p>
+
+    <h2><span class="num">1.</span>Data controller</h2>
+    <p>Generala is developed and published by an independent developer, Nestor del Rio. For any privacy question, write to <a href="mailto:nestordelrio1989@gmail.com">nestordelrio1989@gmail.com</a>.</p>
+
+    <h2><span class="num">2.</span>Data the app collects directly</h2>
+    <p>Generala has <b>no account system and no sign-up</b>. We never ask for your name, email, or any personal data to play. The only things saved are what the game needs — your game in progress (so you can resume it), the player names you type, whether you turned on the daily reminder, whether you bought "Remove ads", and how many games you've played (to space out ads) — and they're saved <b>only in local storage on your own device</b> (Android SharedPreferences). This data is never sent to us or to any server of ours. If Android backup is on, the system may include it in your personal Google backup; uninstalling the app deletes it from the phone.</p>
+
+    <h2><span class="num">3.</span>Data collected by ads (Google AdMob)</h2>
+    <p>Generala is funded by ads (interstitial and rewarded video) served by <b>Google AdMob</b>, a Google service. To show and measure those ads, the AdMob SDK may collect on your device:</p>
+    <table>
+      <tr><th>Data</th><th>What it's used for</th></tr>
+      <tr><td>IP address</td><td>Estimating your general location (country/region) to show relevant ads.</td></tr>
+      <tr><td>Android advertising ID and App Set ID</td><td>Personalizing and measuring ads across apps, unless you turn this off (see section 5).</td></tr>
+      <tr><td>Ad interactions</td><td>App launches, taps, and video views, to measure ad campaign performance.</td></tr>
+      <tr><td>Diagnostic data</td><td>Load times and stability, for the ad's technical operation.</td></tr>
+    </table>
+    <p>This data is collected and processed by Google as an independent controller, under its own <a href="https://policies.google.com/privacy" target="_blank" rel="noopener">Privacy Policy</a>, and travels encrypted (TLS). We don't see or store this information — Generala doesn't run its own servers.</p>
+
+    <h2><span class="num">4.</span>"Remove ads" purchase</h2>
+    <p>The one-time "Remove ads" purchase is processed entirely by <b>Google Play</b>. We never receive your card or payment details: the app only gets confirmation from Google Play that the purchase exists, so it can remove ads between games. <a href="https://policies.google.com/privacy" target="_blank" rel="noopener">Google's Privacy Policy</a> applies.</p>
+
+    <h2><span class="num">5.</span>Ad consent and your choices</h2>
+    <p>The app uses Google's consent form (User Messaging Platform, UMP) to ask permission before showing personalized ads, where your region's law requires it (for example, GDPR in the EU/UK). If you don't consent, you'll still see ads, just not personalized ones.</p>
+    <p>You can also, at any time, from your own Android device:</p>
+    <ul>
+      <li>Go to <b>Settings → Google → Ads</b> and turn on "Opt out of Ads Personalization".</li>
+      <li>Reset your advertising ID from that same screen.</li>
+      <li>Review and manage your Google ad data at <a href="https://myaccount.google.com/data-and-privacy" target="_blank" rel="noopener">myaccount.google.com</a>.</li>
+    </ul>
+
+    <h2><span class="num">6.</span>Children</h2>
+    <p>Generala is a general-audience dice game with no real money or gambling, not specifically directed at children under 13, and is not enrolled in Google Play's "Designed for Families" program. We don't knowingly request or collect personal data from children. When an ad request is tagged for child-directed treatment, the advertising ID isn't transmitted, per Google's policies. We recommend adult supervision if a child uses the app.</p>
+
+    <h2><span class="num">7.</span>Device permissions</h2>
+    <p>The app asks for these Android permissions: <code>INTERNET</code> (to load ads), <code>VIBRATE</code> (vibration when tapping and rolling dice), and <code>POST_NOTIFICATIONS</code> (for the optional daily reminder, a notification generated locally on your phone with no server involved). Generala doesn't access your camera, microphone, contacts, location, or files.</p>
+
+    <h2><span class="num">8.</span>Security and retention</h2>
+    <p>Since we don't operate servers or user accounts, we don't retain any personal data of yours centrally. Your game data lives on your device until you uninstall the app or manually clear its data. Data processed by Google for ads is governed by Google's own retention schedules, described in its Privacy Policy.</p>
+
+    <h2><span class="num">9.</span>Your rights</h2>
+    <p>Depending on where you live, you may have rights of access, correction, deletion, or objection over your data (for example, under GDPR or similar laws). Since we don't hold personally identifiable data about you, the most direct way to exercise these is: uninstall the app to delete your local data, and manage your Google advertising data from your Google account. For anything else, write to <a href="mailto:nestordelrio1989@gmail.com">nestordelrio1989@gmail.com</a>.</p>
+
+    <h2><span class="num">10.</span>Changes to this policy</h2>
+    <p>We may update this policy if something changes in the app or the services it uses. The "last updated" date above will always reflect the current version, published at this same address.</p>
+
+    <h2><span class="num">11.</span>Contact</h2>
+    <div class="card contact">
+      <span><b>Developer:</b> Nestor del Rio</span>
+      <span><b>Email:</b> <a href="mailto:nestordelrio1989@gmail.com">nestordelrio1989@gmail.com</a></span>
+      <span><b>App:</b> com.nestordelrio.generala</span>
+    </div>
+  </section>
+
+  <!-- ============ PORTUGUÊS ============ -->
+  <section class="lang-section" id="pt" data-lang-section="pt" hidden>
+    <div class="card summary">
+      <h3>Resumo rápido</h3>
+      <ul>
+        <li>O Generala não exige cadastro nem conta — não sabemos quem você é.</li>
+        <li>A partida em andamento e os nomes de jogadores que você digita ficam salvos só no seu próprio celular, nunca em um servidor nosso.</li>
+        <li>Os únicos dados que saem do aparelho são os que o <b>Google AdMob</b> coleta para exibir e medir os anúncios do jogo.</li>
+        <li>Você pode desativar a personalização de anúncios nas configurações do seu Android a qualquer momento.</li>
+      </ul>
+    </div>
+
+    <p>Esta política explica quais informações são coletadas quando você usa o <b>Generala</b> (listado com nomes como "Generala: Jogo de Dados", dependendo da loja), o jogo de dados para Android desenvolvido por Nestor del Rio (pacote <code>com.nestordelrio.generala</code>).</p>
+
+    <h2><span class="num">1.</span>Responsável pelos dados</h2>
+    <p>O Generala é desenvolvido e publicado por um desenvolvedor independente, Nestor del Rio. Para qualquer dúvida sobre privacidade, escreva para <a href="mailto:nestordelrio1989@gmail.com">nestordelrio1989@gmail.com</a>.</p>
+
+    <h2><span class="num">2.</span>Dados que o app coleta diretamente</h2>
+    <p>O Generala <b>não tem sistema de conta nem cadastro</b>. Nunca pedimos nome, e-mail ou qualquer dado pessoal para jogar. Só é salvo o que o jogo precisa — a partida em andamento (para retomá-la), os nomes de jogadores que você digitar, se você ativou o lembrete diário, se comprou "Sem anúncios" e quantas partidas jogou (para espaçar os anúncios) — e isso é salvo <b>apenas no armazenamento local do seu próprio aparelho</b> (SharedPreferences do Android). Esses dados nunca são enviados para nós nem para nenhum servidor próprio. Se o backup do Android estiver ativado, o sistema pode incluí-los no seu backup pessoal do Google; se você desinstalar o app, eles são apagados do celular.</p>
+
+    <h2><span class="num">3.</span>Dados coletados pelos anúncios (Google AdMob)</h2>
+    <p>O Generala é financiado por anúncios (intersticiais e vídeo recompensado) fornecidos pelo <b>Google AdMob</b>, um serviço do Google. Para exibir e medir esses anúncios, o SDK do AdMob pode coletar no seu aparelho:</p>
+    <table>
+      <tr><th>Dado</th><th>Para que é usado</th></tr>
+      <tr><td>Endereço IP</td><td>Estimar sua localização geral (país/região) para exibir anúncios relevantes.</td></tr>
+      <tr><td>ID de publicidade do Android e App Set ID</td><td>Personalizar e medir anúncios entre apps, a menos que você desative (veja o item 5).</td></tr>
+      <tr><td>Interações com anúncios</td><td>Aberturas do app, toques e reproduções de vídeo, para medir o desempenho da campanha publicitária.</td></tr>
+      <tr><td>Dados de diagnóstico</td><td>Tempos de carregamento e estabilidade, para o funcionamento técnico do anúncio.</td></tr>
+    </table>
+    <p>Esses dados são coletados e processados pelo Google como responsável independente, conforme sua própria <a href="https://policies.google.com/privacy" target="_blank" rel="noopener">Política de Privacidade</a>, e trafegam criptografados (TLS). Nós não vemos nem armazenamos essa informação — o Generala não opera servidores próprios.</p>
+
+    <h2><span class="num">4.</span>Compra de "Sem anúncios"</h2>
+    <p>A compra única "Sem anúncios" é processada inteiramente pelo <b>Google Play</b>. Nós não recebemos seu cartão nem seus dados de pagamento: o app só recebe do Google Play a confirmação de que a compra existe, para remover os anúncios entre partidas. Vale a <a href="https://policies.google.com/privacy" target="_blank" rel="noopener">Política de Privacidade do Google</a>.</p>
+
+    <h2><span class="num">5.</span>Consentimento de anúncios e suas opções</h2>
+    <p>O app usa o formulário de consentimento do Google (User Messaging Platform, UMP) para pedir sua permissão antes de exibir anúncios personalizados, quando a lei da sua região exige (por exemplo, o RGPD na União Europeia/Reino Unido). Se você não consentir, ainda vai ver anúncios, só que não personalizados.</p>
+    <p>Além disso, a qualquer momento, direto no seu Android, você pode:</p>
+    <ul>
+      <li>Ir em <b>Configurações → Google → Anúncios</b> e ativar "Desativar personalização de anúncios".</li>
+      <li>Redefinir seu ID de publicidade na mesma tela.</li>
+      <li>Revisar e gerenciar seus dados de anúncios do Google em <a href="https://myaccount.google.com/data-and-privacy" target="_blank" rel="noopener">myaccount.google.com</a>.</li>
+    </ul>
+
+    <h2><span class="num">6.</span>Menores de idade</h2>
+    <p>O Generala é um jogo de dados para público geral, sem dinheiro real nem apostas, não é direcionado especificamente a menores de 13 anos e não está inscrito no programa "Criado para famílias" do Google Play. Não solicitamos nem coletamos intencionalmente dados pessoais de menores. Quando uma solicitação de anúncio é marcada como direcionada a um usuário menor, o ID de publicidade não é transmitido, conforme as políticas do Google. Recomendamos supervisão de um adulto caso um menor use o app.</p>
+
+    <h2><span class="num">7.</span>Permissões do aparelho</h2>
+    <p>O app pede estas permissões do Android: <code>INTERNET</code> (para carregar os anúncios), <code>VIBRATE</code> (vibração ao tocar e lançar os dados) e <code>POST_NOTIFICATIONS</code> (para o lembrete diário opcional, uma notificação gerada localmente no seu celular, sem conexão com nenhum servidor). O Generala não acessa sua câmera, microfone, contatos, localização ou arquivos.</p>
+
+    <h2><span class="num">8.</span>Segurança e retenção</h2>
+    <p>Como não operamos servidores nem contas de usuário, não retemos nenhum dado pessoal seu de forma centralizada. Seus dados de jogo ficam no seu aparelho até você desinstalar o app ou apagar os dados manualmente. Os dados processados pelo Google para anúncios seguem os prazos de retenção do próprio Google, descritos na Política de Privacidade dele.</p>
+
+    <h2><span class="num">9.</span>Seus direitos</h2>
+    <p>Dependendo do seu país de residência, você pode ter direitos de acesso, correção, exclusão ou oposição sobre seus dados (por exemplo, sob o RGPD ou leis semelhantes). Como não guardamos dados pessoais identificáveis seus, a forma mais direta de exercê-los é: desinstalar o app para apagar seus dados locais, e gerenciar seus dados publicitários do Google pela sua conta Google. Para qualquer outra dúvida, escreva para <a href="mailto:nestordelrio1989@gmail.com">nestordelrio1989@gmail.com</a>.</p>
+
+    <h2><span class="num">10.</span>Alterações a esta política</h2>
+    <p>Podemos atualizar esta política se algo mudar no app ou nos serviços que ele usa. A data de "última atualização" no topo sempre vai refletir a versão vigente, publicada neste mesmo endereço.</p>
+
+    <h2><span class="num">11.</span>Contato</h2>
+    <div class="card contact">
+      <span><b>Desenvolvedor:</b> Nestor del Rio</span>
+      <span><b>E-mail:</b> <a href="mailto:nestordelrio1989@gmail.com">nestordelrio1989@gmail.com</a></span>
+      <span><b>App:</b> com.nestordelrio.generala</span>
+    </div>
+  </section>
+
+  <p class="disclaimer" id="disclaimer">
+    Esta página fue redactada como plantilla a partir de la implementación real de Generala (sin cuentas de usuario,
+    almacenamiento local de progreso, y anuncios servidos por Google AdMob con consentimiento UMP) y de la documentación
+    pública de Google sobre requisitos de privacidad de Play Store y AdMob (developers.google.com/admob,
+    support.google.com/admob). No reemplaza el asesoramiento de un abogado — antes de publicar, conviene que la revise
+    alguien con conocimiento legal de tu jurisdicción, en especial si vas a operar en la Unión Europea (RGPD), California
+    (CCPA/CPRA) u otras regiones con leyes de protección de datos específicas, o si en algún momento la app pasa a estar
+    dirigida a menores.
+  </p>
+</div>
+
+<script>
+(function(){
+  var LABELS = {
+    es: { title: 'Política de privacidad', meta: 'Última actualización: 24 de septiembre de 2026',
+      disclaimer: 'Esta página fue redactada como plantilla a partir de la implementación real de Generala (sin cuentas de usuario, almacenamiento local de progreso, y anuncios servidos por Google AdMob con consentimiento UMP) y de la documentación pública de Google sobre requisitos de privacidad de Play Store y AdMob (developers.google.com/admob, support.google.com/admob). No reemplaza el asesoramiento de un abogado — antes de publicar, conviene que la revise alguien con conocimiento legal de tu jurisdicción, en especial si vas a operar en la Unión Europea (RGPD), California (CCPA/CPRA) u otras regiones con leyes de protección de datos específicas, o si en algún momento la app pasa a estar dirigida a menores.' },
+    en: { title: 'Privacy Policy', meta: 'Last updated: September 24, 2026',
+      disclaimer: 'This page was drafted as a template based on Generala\'s real implementation (no user accounts, local-only progress storage, and ads served by Google AdMob with UMP consent) and on Google\'s public documentation on Play Store and AdMob privacy requirements (developers.google.com/admob, support.google.com/admob). It does not replace advice from a lawyer — before publishing, have someone with legal knowledge of your jurisdiction review it, especially if you\'ll operate in the EU (GDPR), California (CCPA/CPRA), or other regions with specific data-protection laws, or if the app ever becomes directed at children.' },
+    pt: { title: 'Política de privacidade', meta: 'Última atualização: 24 de setembro de 2026',
+      disclaimer: 'Esta página foi redigida como modelo com base na implementação real do Generala (sem contas de usuário, armazenamento do progresso apenas local, e anúncios veiculados pelo Google AdMob com consentimento UMP) e na documentação pública do Google sobre requisitos de privacidade da Play Store e do AdMob (developers.google.com/admob, support.google.com/admob). Ela não substitui o parecer de um advogado — antes de publicar, vale ter alguém com conhecimento jurídico da sua jurisdição revisando, especialmente se você for operar na União Europeia (RGPD), Califórnia (CCPA/CPRA) ou outras regiões com leis específicas de proteção de dados, ou se o app passar a ser direcionado a menores.' }
+  };
+
+  var tabs = document.querySelectorAll('.tab');
+  var sections = document.querySelectorAll('.lang-section');
+
+  function setLang(lang, push){
+    tabs.forEach(function(t){ t.setAttribute('aria-selected', t.dataset.lang === lang ? 'true' : 'false'); });
+    sections.forEach(function(s){ s.hidden = s.dataset.langSection !== lang; });
+    var L = LABELS[lang] || LABELS.es;
+    document.getElementById('page-title').textContent = L.title;
+    document.getElementById('page-meta').textContent = L.meta;
+    document.getElementById('disclaimer').textContent = L.disclaimer;
+    try{ document.documentElement.lang = lang; }catch(e){}
+    if(push){ try{ history.replaceState(null,'','#'+lang); }catch(e){} }
+  }
+
+  tabs.forEach(function(t){
+    t.addEventListener('click', function(){ setLang(t.dataset.lang, true); });
+  });
+
+  var initial = (location.hash || '').replace('#','');
+  if(['es','en','pt'].indexOf(initial) === -1) initial = 'es';
+  setLang(initial, false);
+})();
+</script>
+

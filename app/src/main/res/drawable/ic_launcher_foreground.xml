@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:width="108dp" android:height="108dp"
+    android:viewportWidth="108" android:viewportHeight="108">
+    <!-- sombra -->
+    <path android:fillColor="#A8641A"
+        android:pathData="M39,32h30a10,10 0,0 1,10 10v30a10,10 0,0 1,-10 10h-30a10,10 0,0 1,-10 -10v-30a10,10 0,0 1,10 -10z" />
+    <!-- dado -->
+    <path android:fillColor="#FDFBF3"
+        android:pathData="M39,28h30a10,10 0,0 1,10 10v30a10,10 0,0 1,-10 10h-30a10,10 0,0 1,-10 -10v-30a10,10 0,0 1,10 -10z" />
+    <!-- cinco puntos -->
+    <path android:fillColor="#241F14"
+        android:pathData="M41,40m-4.6,0a4.6,4.6 0,1 1,9.2 0a4.6,4.6 0,1 1,-9.2 0
+                          M67,40m-4.6,0a4.6,4.6 0,1 1,9.2 0a4.6,4.6 0,1 1,-9.2 0
+                          M54,53m-4.6,0a4.6,4.6 0,1 1,9.2 0a4.6,4.6 0,1 1,-9.2 0
+                          M41,66m-4.6,0a4.6,4.6 0,1 1,9.2 0a4.6,4.6 0,1 1,-9.2 0
+                          M67,66m-4.6,0a4.6,4.6 0,1 1,9.2 0a4.6,4.6 0,1 1,-9.2 0" />
+</vector>

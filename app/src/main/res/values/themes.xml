@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources xmlns:tools="http://schemas.android.com/tools">
+    <!-- Modo claro fijo (también con el sistema en modo oscuro). -->
+    <style name="Theme.Generala" parent="android:Theme.Material.Light.NoActionBar">
+        <item name="android:windowBackground">@color/felt</item>
+        <item name="android:colorAccent">@color/amber</item>
+        <item name="android:forceDarkAllowed" tools:targetApi="q">false</item>
+    </style>
+</resources>

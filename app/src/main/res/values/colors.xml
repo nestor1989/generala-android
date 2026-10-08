@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="felt">#0F3D2E</color>
+    <color name="felt_dark">#0A241B</color>
+    <color name="cream">#F6EFDC</color>
+    <color name="amber">#D98E2B</color>
+    <color name="pip">#241F14</color>
+</resources>
